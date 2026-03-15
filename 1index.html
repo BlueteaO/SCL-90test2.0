@@ -40,181 +40,19 @@
       color: var(--foreground);
       min-height: 100vh;
       overflow-x: hidden;
-      transition: background 1.5s ease-in-out;
     }
 
-    /* 流体渐变背景 - 淡紫到浅蓝 */
-    .breathing-bg {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: -1;
-      background: linear-gradient(
-        135deg,
-        var(--fluid-color-1, rgba(196, 181, 253, 0.5)) 0%,
-        var(--fluid-color-2, rgba(165, 180, 252, 0.4)) 25%,
-        var(--fluid-color-3, rgba(147, 197, 253, 0.5)) 50%,
-        var(--fluid-color-4, rgba(186, 230, 253, 0.4)) 75%,
-        var(--fluid-color-5, rgba(224, 231, 255, 0.5)) 100%
-      );
-      background-size: 400% 400%;
-      animation: fluid-flow 15s ease-in-out infinite;
-      transition: all 2s ease-in-out;
-    }
-
-    .breathing-bg::before,
-    .breathing-bg::after {
-      content: '';
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(100px);
-      opacity: 0.6;
-    }
-
-    .breathing-bg::before {
-      width: 50vw;
-      height: 50vw;
-      max-width: 500px;
-      max-height: 500px;
-      top: -10%;
-      left: -5%;
-      background: var(--blob-color-1, rgba(196, 181, 253, 0.6));
-      animation: blob-float-1 12s ease-in-out infinite;
-    }
-
-    .breathing-bg::after {
-      width: 45vw;
-      height: 45vw;
-      max-width: 450px;
-      max-height: 450px;
-      bottom: -10%;
-      right: -5%;
-      background: var(--blob-color-2, rgba(147, 197, 253, 0.6));
-      animation: blob-float-2 14s ease-in-out infinite;
-    }
-
-    @keyframes fluid-flow {
-      0%, 100% {
-        background-position: 0% 50%;
-      }
-      25% {
-        background-position: 50% 100%;
-      }
-      50% {
-        background-position: 100% 50%;
-      }
-      75% {
-        background-position: 50% 0%;
-      }
-    }
-
-    @keyframes blob-float-1 {
-      0%, 100% {
-        transform: translate(0, 0) scale(1);
-        opacity: 0.5;
-      }
-      33% {
-        transform: translate(5%, 10%) scale(1.1);
-        opacity: 0.6;
-      }
-      66% {
-        transform: translate(-3%, 5%) scale(0.95);
-        opacity: 0.5;
-      }
-    }
-
-    @keyframes blob-float-2 {
-      0%, 100% {
-        transform: translate(0, 0) scale(1);
-        opacity: 0.5;
-      }
-      33% {
-        transform: translate(-5%, -8%) scale(0.9);
-        opacity: 0.6;
-      }
-      66% {
-        transform: translate(4%, -3%) scale(1.05);
-        opacity: 0.55;
-      }
-    }
-
-    /* 不同阶段的颜色主题 - 淡紫到浅蓝渐变 */
-    .breathing-bg.stage-0 {
-      --fluid-color-1: rgba(196, 181, 253, 0.5);
-      --fluid-color-2: rgba(167, 139, 250, 0.4);
-      --fluid-color-3: rgba(165, 180, 252, 0.5);
-      --fluid-color-4: rgba(147, 197, 253, 0.4);
-      --fluid-color-5: rgba(186, 230, 253, 0.5);
-      --blob-color-1: rgba(196, 181, 253, 0.6);
-      --blob-color-2: rgba(147, 197, 253, 0.6);
-    }
-    .breathing-bg.stage-1 {
-      --fluid-color-1: rgba(167, 139, 250, 0.5);
-      --fluid-color-2: rgba(139, 92, 246, 0.35);
-      --fluid-color-3: rgba(165, 180, 252, 0.5);
-      --fluid-color-4: rgba(129, 140, 248, 0.4);
-      --fluid-color-5: rgba(147, 197, 253, 0.5);
-      --blob-color-1: rgba(167, 139, 250, 0.55);
-      --blob-color-2: rgba(129, 140, 248, 0.6);
-    }
-    .breathing-bg.stage-2 {
-      --fluid-color-1: rgba(165, 180, 252, 0.5);
-      --fluid-color-2: rgba(129, 140, 248, 0.4);
-      --fluid-color-3: rgba(147, 197, 253, 0.5);
-      --fluid-color-4: rgba(125, 211, 252, 0.4);
-      --fluid-color-5: rgba(186, 230, 253, 0.5);
-      --blob-color-1: rgba(165, 180, 252, 0.6);
-      --blob-color-2: rgba(147, 197, 253, 0.55);
-    }
-    .breathing-bg.stage-3 {
-      --fluid-color-1: rgba(147, 197, 253, 0.5);
-      --fluid-color-2: rgba(125, 211, 252, 0.4);
-      --fluid-color-3: rgba(186, 230, 253, 0.5);
-      --fluid-color-4: rgba(165, 180, 252, 0.35);
-      --fluid-color-5: rgba(199, 210, 254, 0.5);
-      --blob-color-1: rgba(147, 197, 253, 0.6);
-      --blob-color-2: rgba(186, 230, 253, 0.55);
-    }
-    .breathing-bg.stage-4 {
-      --fluid-color-1: rgba(186, 230, 253, 0.5);
-      --fluid-color-2: rgba(147, 197, 253, 0.4);
-      --fluid-color-3: rgba(199, 210, 254, 0.5);
-      --fluid-color-4: rgba(196, 181, 253, 0.4);
-      --fluid-color-5: rgba(224, 231, 255, 0.5);
-      --blob-color-1: rgba(186, 230, 253, 0.55);
-      --blob-color-2: rgba(196, 181, 253, 0.6);
-    }
-
-    /* 过渡动画 */
-    .breathing-bg::before,
-    .breathing-bg::after {
-      transition: background 2.5s ease-in-out;
-    }
-
-    /* 玻璃拟态卡片样式 */
+    /* 卡通边框样式 */
     .cartoon-border {
-      border: 1px solid rgba(255, 255, 255, 0.5);
-      border-radius: 24px;
-      background: rgba(255, 255, 255, 0.7);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      box-shadow: 
-        0 8px 32px rgba(0, 0, 0, 0.08),
-        inset 0 1px 0 rgba(255, 255, 255, 0.9);
+      border: 4px solid var(--foreground);
+      border-radius: 20px;
+      box-shadow: 6px 6px 0 var(--foreground);
     }
 
     .cartoon-border-thin {
-      border: 1px solid rgba(255, 255, 255, 0.4);
-      border-radius: 20px;
-      background: rgba(255, 255, 255, 0.6);
-      backdrop-filter: blur(15px);
-      -webkit-backdrop-filter: blur(15px);
-      box-shadow: 
-        0 6px 24px rgba(0, 0, 0, 0.06),
-        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+      border: 3px solid var(--foreground);
+      border-radius: 16px;
+      box-shadow: 4px 4px 0 var(--foreground);
     }
 
     /* 动画 */
@@ -269,95 +107,48 @@
       animation: slide-in 0.4s ease-out forwards;
     }
 
-    /* 按钮 - 果冻玻璃拟态风格 */
+    /* 按钮 */
     .btn {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 14px 28px;
+      padding: 12px 24px;
       font-size: 16px;
       font-weight: 700;
       border: none;
-      border-radius: 50px;
+      border-radius: 12px;
       cursor: pointer;
-      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-      position: relative;
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
+      transition: all 0.2s;
     }
 
     .btn:hover {
-      transform: translateY(-3px) scale(1.02);
+      transform: translateY(-2px);
     }
 
     .btn:active {
-      animation: jelly-press 0.4s ease;
-    }
-
-    @keyframes jelly-press {
-      0% { transform: scale(1); }
-      30% { transform: scale(0.92, 1.08); }
-      50% { transform: scale(1.05, 0.95); }
-      70% { transform: scale(0.98, 1.02); }
-      100% { transform: scale(1); }
+      transform: translateY(0);
     }
 
     .btn-primary {
-      background: linear-gradient(135deg, rgba(74, 222, 128, 0.85), rgba(34, 197, 94, 0.9));
+      background: var(--primary);
       color: var(--primary-foreground);
-      box-shadow: 
-        0 4px 15px rgba(74, 222, 128, 0.4),
-        inset 0 1px 0 rgba(255, 255, 255, 0.3),
-        inset 0 -1px 0 rgba(0, 0, 0, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.3);
-    }
-
-    .btn-primary:hover {
-      box-shadow: 
-        0 8px 25px rgba(74, 222, 128, 0.5),
-        inset 0 1px 0 rgba(255, 255, 255, 0.4),
-        inset 0 -1px 0 rgba(0, 0, 0, 0.1);
     }
 
     .btn-secondary {
-      background: linear-gradient(135deg, rgba(254, 243, 199, 0.85), rgba(253, 224, 71, 0.8));
+      background: var(--secondary);
       color: var(--secondary-foreground);
-      box-shadow: 
-        0 4px 15px rgba(253, 224, 71, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.5),
-        inset 0 -1px 0 rgba(0, 0, 0, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.4);
-    }
-
-    .btn-secondary:hover {
-      box-shadow: 
-        0 8px 25px rgba(253, 224, 71, 0.4),
-        inset 0 1px 0 rgba(255, 255, 255, 0.6),
-        inset 0 -1px 0 rgba(0, 0, 0, 0.05);
     }
 
     .btn-outline {
-      background: rgba(255, 255, 255, 0.7);
+      background: var(--card);
       color: var(--foreground);
-      border: 2px solid rgba(45, 45, 74, 0.2);
-      box-shadow: 
-        0 4px 15px rgba(0, 0, 0, 0.08),
-        inset 0 1px 0 rgba(255, 255, 255, 0.8);
-    }
-
-    .btn-outline:hover {
-      background: rgba(255, 255, 255, 0.85);
-      border-color: rgba(45, 45, 74, 0.3);
-      box-shadow: 
-        0 8px 25px rgba(0, 0, 0, 0.12),
-        inset 0 1px 0 rgba(255, 255, 255, 0.9);
+      border: 3px solid var(--foreground);
     }
 
     .btn:disabled {
       opacity: 0.5;
       cursor: not-allowed;
       transform: none;
-      animation: none;
     }
 
     /* 页面容器 */
@@ -408,15 +199,11 @@
 
     /* 欢迎页面 */
     .welcome-card {
-      background: rgba(255, 255, 255, 0.75);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      background: var(--card);
       padding: 3rem;
       max-width: 600px;
       width: 100%;
       text-align: center;
-      border: 1px solid rgba(255, 255, 255, 0.5);
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
     }
 
     .welcome-icon {
@@ -453,21 +240,11 @@
       display: flex;
       align-items: center;
       gap: 8px;
-      background: rgba(255, 255, 255, 0.6);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      padding: 10px 18px;
-      border-radius: 50px;
+      background: var(--secondary);
+      padding: 8px 16px;
+      border-radius: 20px;
       font-size: 0.9rem;
       font-weight: 600;
-      border: 1px solid rgba(255, 255, 255, 0.5);
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-
-    .feature-tag:hover {
-      transform: translateY(-2px) scale(1.02);
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
     }
 
     .welcome-note {
@@ -491,15 +268,11 @@
     }
 
     .quiz-counter {
-      background: rgba(255, 255, 255, 0.7);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      padding: 8px 18px;
-      border-radius: 50px;
+      background: var(--card);
+      padding: 8px 16px;
+      border-radius: 20px;
       font-size: 0.9rem;
       font-weight: 600;
-      border: 1px solid rgba(255, 255, 255, 0.5);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     }
 
     /* 进度条 */
@@ -517,23 +290,19 @@
 
     .progress-bar {
       height: 24px;
-      background: rgba(255, 255, 255, 0.5);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border-radius: 50px;
-      border: 1px solid rgba(255, 255, 255, 0.6);
+      background: var(--muted);
+      border-radius: 12px;
+      border: 3px solid rgba(45, 45, 74, 0.2);
       overflow: hidden;
       position: relative;
-      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
     }
 
     .progress-fill {
       height: 100%;
-      background: linear-gradient(90deg, rgba(74, 222, 128, 0.9), rgba(34, 197, 94, 0.95));
-      border-radius: 50px;
+      background: var(--primary);
+      border-radius: 12px;
       position: relative;
-      transition: width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-      box-shadow: 0 0 15px rgba(74, 222, 128, 0.4);
+      transition: width 0.3s ease-out;
     }
 
     .progress-fill::after {
@@ -567,26 +336,19 @@
     }
 
     .question-number {
-      background: rgba(255, 255, 255, 0.7);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      padding: 6px 14px;
-      border-radius: 50px;
+      background: var(--secondary);
+      padding: 6px 12px;
+      border-radius: 20px;
       font-size: 0.85rem;
       font-weight: 700;
-      border: 1px solid rgba(255, 255, 255, 0.5);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     }
 
     .question-factor {
-      background: rgba(255, 255, 255, 0.5);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      padding: 4px 12px;
-      border-radius: 50px;
+      background: var(--muted);
+      padding: 4px 10px;
+      border-radius: 20px;
       font-size: 0.75rem;
       color: var(--muted-foreground);
-      border: 1px solid rgba(255, 255, 255, 0.4);
     }
 
     .question-content {
@@ -627,39 +389,25 @@
       align-items: center;
       gap: 4px;
       padding: 1rem 0.5rem;
-      border: 1px solid rgba(255, 255, 255, 0.4);
-      border-radius: 20px;
-      background: rgba(255, 255, 255, 0.6);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
+      border: 3px solid rgba(45, 45, 74, 0.2);
+      border-radius: 12px;
+      background: var(--card);
       cursor: pointer;
-      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-      box-shadow: 
-        0 4px 15px rgba(0, 0, 0, 0.05),
-        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+      transition: all 0.2s;
     }
 
     .answer-btn:hover {
-      background: rgba(255, 255, 255, 0.8);
-      transform: translateY(-3px) scale(1.03);
-      box-shadow: 
-        0 8px 25px rgba(0, 0, 0, 0.1),
-        inset 0 1px 0 rgba(255, 255, 255, 0.9);
-      border-color: rgba(147, 197, 253, 0.5);
-    }
-
-    .answer-btn:active {
-      animation: jelly-press 0.4s ease;
+      border-color: var(--primary);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
 
     .answer-btn.selected {
-      background: linear-gradient(135deg, rgba(74, 222, 128, 0.85), rgba(34, 197, 94, 0.9));
+      background: var(--primary);
       color: var(--primary-foreground);
-      border-color: rgba(255, 255, 255, 0.4);
-      transform: translateY(-2px) scale(1.02);
-      box-shadow: 
-        0 6px 20px rgba(74, 222, 128, 0.4),
-        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+      border-color: var(--primary);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
 
     .answer-emoji {
@@ -689,12 +437,8 @@
     .quick-nav {
       margin-top: 1.5rem;
       padding: 1rem;
-      background: rgba(255, 255, 255, 0.5);
-      backdrop-filter: blur(15px);
-      -webkit-backdrop-filter: blur(15px);
-      border-radius: 20px;
-      border: 1px solid rgba(255, 255, 255, 0.5);
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      background: var(--secondary);
+      border-radius: 16px;
     }
 
     .quick-nav-title {
@@ -716,37 +460,30 @@
       height: 28px;
       font-size: 0.7rem;
       font-weight: 700;
-      border: 1px solid rgba(255, 255, 255, 0.5);
+      border: none;
       border-radius: 50%;
       cursor: pointer;
-      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
-      backdrop-filter: blur(5px);
-      -webkit-backdrop-filter: blur(5px);
+      transition: all 0.2s;
     }
 
     .quick-nav-btn.answered {
-      background: linear-gradient(135deg, rgba(74, 222, 128, 0.85), rgba(34, 197, 94, 0.9));
+      background: var(--primary);
       color: var(--primary-foreground);
-      box-shadow: 0 2px 8px rgba(74, 222, 128, 0.3);
     }
 
     .quick-nav-btn.current {
-      background: linear-gradient(135deg, rgba(248, 113, 113, 0.85), rgba(239, 68, 68, 0.9));
+      background: var(--accent);
       color: var(--accent-foreground);
-      box-shadow: 0 0 0 2px rgba(248, 113, 113, 0.5), 0 2px 8px rgba(248, 113, 113, 0.3);
+      box-shadow: 0 0 0 2px var(--foreground);
     }
 
     .quick-nav-btn.unanswered {
-      background: rgba(255, 255, 255, 0.5);
+      background: var(--muted);
       color: var(--muted-foreground);
     }
 
     .quick-nav-btn:hover {
-      transform: scale(1.15);
-    }
-
-    .quick-nav-btn:active {
-      animation: jelly-press 0.3s ease;
+      transform: scale(1.1);
     }
 
     /* 结果页面 */
@@ -967,77 +704,6 @@
       display: none !important;
     }
 
-    /* 音乐播放按钮 - 半透明圆形旋转风格 */
-    .music-toggle {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.75);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border: 2px solid rgba(0, 0, 0, 0.1);
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-      transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
-    }
-
-    .music-toggle:hover {
-      background: rgba(255, 255, 255, 0.9);
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-      transform: scale(1.05);
-    }
-
-    .music-toggle:active {
-      transform: scale(0.95);
-    }
-
-    /* 音乐图标容器 - 用于旋转 */
-    .music-icon {
-      width: 28px;
-      height: 28px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: transform 0.3s ease;
-    }
-
-    .music-icon svg {
-      width: 100%;
-      height: 100%;
-      fill: #333;
-      transition: fill 0.3s ease;
-    }
-
-    /* 播放状态 - 旋转动画 */
-    .music-toggle.playing {
-      background: rgba(76, 175, 80, 0.2);
-      border-color: rgba(76, 175, 80, 0.4);
-    }
-
-    .music-toggle.playing .music-icon {
-      animation: spin 3s linear infinite;
-    }
-
-    .music-toggle.playing .music-icon svg {
-      fill: #2e7d32;
-    }
-
-    @keyframes spin {
-      from {
-        transform: rotate(0deg);
-      }
-      to {
-        transform: rotate(360deg);
-      }
-    }
-
     /* 响应式 */
     @media (max-width: 640px) {
       .welcome-card {
@@ -1076,30 +742,6 @@
   </style>
 </head>
 <body>
-  <!-- 呼吸感背景 -->
-  <div id="breathing-bg" class="breathing-bg stage-0"></div>
-
-  <!-- 背景音乐 - 请将音频文件路径替换为实际路径 -->
-  <audio id="bgm" loop preload="auto">
-    <!-- 替换为你的音频文件路径，支持 mp3, ogg, wav 格式 -->
-    <source src="./audio/bgm.mp3" type="audio/mpeg">
-    <source src="./audio/bgm.ogg" type="audio/ogg">
-    <source src="./audio/bgm.wav" type="audio/wav">
-  </audio>
-
-  <!-- 音乐播放按钮 - 半透明圆形旋转风格 -->
-  <button id="music-toggle" class="music-toggle" onclick="toggleMusic()" title="点击播放/暂停音乐">
-    <div class="music-icon">
-      <!-- 音乐唱片图标 -->
-      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1.5"/>
-        <circle cx="12" cy="12" r="3" fill="currentColor"/>
-        <circle cx="12" cy="12" r="6" fill="none" stroke="currentColor" stroke-width="0.8" opacity="0.5"/>
-        <path d="M12 2 A10 10 0 0 1 22 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-      </svg>
-    </div>
-  </button>
-
   <!-- 欢迎页面 -->
   <div id="welcome-page" class="page-container">
     <div class="bg-decoration bg-pink" style="width: 300px; height: 300px; top: -100px; left: -100px;"></div>
@@ -1310,12 +952,12 @@
       { id: 35, text: "旁人能知道您的私下想法", factor: "精神病性" },
       { id: 36, text: "感到别人不理解您、不同情您", factor: "人际敏感" },
       { id: 37, text: "感到人们对您不友好，不喜欢您", factor: "人际敏感" },
-      { id: 38, text: "做事��须做得很慢以保证做得正确", factor: "强迫" },
+      { id: 38, text: "做事必须做得很慢以保证做得正确", factor: "强迫" },
       { id: 39, text: "心跳得很厉害", factor: "焦虑" },
       { id: 40, text: "恶心或胃部不舒服", factor: "躯体化" },
       { id: 41, text: "感到比不上他人", factor: "人际敏感" },
       { id: 42, text: "肌肉酸痛", factor: "躯体化" },
-      { id: 43, text: "感到有人在监视您���谈论您", factor: "偏执" },
+      { id: 43, text: "感到有人在监视您、谈论您", factor: "偏执" },
       { id: 44, text: "难以入睡", factor: "其他" },
       { id: 45, text: "做事必须反复检查", factor: "强迫" },
       { id: 46, text: "难以作出决定", factor: "强迫" },
@@ -1382,7 +1024,7 @@
     const characters = [
       {
         id: "sunny", name: "阳光小太阳", personality: "乐观开朗型",
-        description: "你就像永远散发温暖的小太阳！内心充满正能量，面对困难总��保持微笑。你的心理状态非常健康，继续保持这种阳光的心态吧！",
+        description: "你就像永远散发温暖的小太阳！内心充满正能量，面对困难总能保持微笑。你的心理状态非常健康，继续保持这种阳光的心态吧！",
         advice: "你的心理健康状态很棒！建议继续保持积极的生活态度，多与朋友分享快乐，你的正能量也会感染身边的人~",
         color: "#FFD93D", emoji: "☀️", scoreRange: { min: 0, max: 1.0 }
       },
@@ -1757,74 +1399,6 @@
         });
       }
     }
-
-    // =============== 音乐播放控制 ===============
-    
-    const bgm = document.getElementById('bgm');
-    const musicToggle = document.getElementById('music-toggle');
-    let isPlaying = false;
-
-    // 切换音乐播放状态
-    function toggleMusic() {
-      if (isPlaying) {
-        pauseMusic();
-      } else {
-        playMusic();
-      }
-    }
-
-    // 播放音乐
-    function playMusic() {
-      bgm.play().then(() => {
-        isPlaying = true;
-        musicToggle.classList.add('playing');
-      }).catch((error) => {
-        console.log('音频播放失败，可能需要用户交互或音频文件不存在：', error);
-        alert('请确保音频文件已放置在正确的路径：./audio/bgm.mp3');
-      });
-    }
-
-    // 暂停音乐
-    function pauseMusic() {
-      bgm.pause();
-      isPlaying = false;
-      musicToggle.classList.remove('playing');
-    }
-
-    // 设置音量（可选）
-    function setVolume(volume) {
-      bgm.volume = Math.max(0, Math.min(1, volume));
-    }
-
-    // 默认音量设置为 50%
-    bgm.volume = 0.5;
-
-    // =============== 呼吸感背景控制 ===============
-    
-    const breathingBg = document.getElementById('breathing-bg');
-    const totalStages = 5;
-
-    // 根据答题进度更新背景颜色
-    function updateBreathingBackground() {
-      const answeredCount = Object.keys(answers).length;
-      const progress = answeredCount / questions.length;
-      
-      // 计算当前应该处于哪个阶段 (0-4)
-      const stage = Math.min(Math.floor(progress * totalStages), totalStages - 1);
-      
-      // 移除所有阶段类，添加当前阶段类
-      for (let i = 0; i < totalStages; i++) {
-        breathingBg.classList.remove(`stage-${i}`);
-      }
-      breathingBg.classList.add(`stage-${stage}`);
-    }
-
-    // 在选择答案时调用背景更新
-    const originalSelectAnswer = selectAnswer;
-    selectAnswer = function(value) {
-      originalSelectAnswer(value);
-      updateBreathingBackground();
-    };
   </script>
 </body>
 </html>
