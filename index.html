@@ -1,1227 +1,1830 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SCL-90 心理测评 | 探索你的内心世界</title>
-  <meta name="description" content="有趣的SCL-90心理健康自评量表，用卡通风格探索你的内心世界">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --background: #fdf8f3;
-      --foreground: #2d2d4a;
-      --card: #ffffff;
-      --primary: #4ade80;
-      --primary-foreground: #ffffff;
-      --secondary: #fef3c7;
-      --secondary-foreground: #2d2d4a;
-      --muted: #f5f5f5;
-      --muted-foreground: #6b7280;
-      --accent: #f87171;
-      --accent-foreground: #ffffff;
-      --toon-pink: #f9a8d4;
-      --toon-blue: #93c5fd;
-      --toon-green: #86efac;
-      --toon-yellow: #fde047;
-      --toon-orange: #fdba74;
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: 'Nunito', sans-serif;
-      background: var(--background);
-      color: var(--foreground);
-      min-height: 100vh;
-      overflow-x: hidden;
-      transition: background 1.5s ease-in-out;
-    }
-
-    /* 流体渐变背景 - 淡紫到浅蓝 */
-    .breathing-bg {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: -1;
-      background: linear-gradient(
-        135deg,
-        var(--fluid-color-1, rgba(196, 181, 253, 0.5)) 0%,
-        var(--fluid-color-2, rgba(165, 180, 252, 0.4)) 25%,
-        var(--fluid-color-3, rgba(147, 197, 253, 0.5)) 50%,
-        var(--fluid-color-4, rgba(186, 230, 253, 0.4)) 75%,
-        var(--fluid-color-5, rgba(224, 231, 255, 0.5)) 100%
-      );
-      background-size: 400% 400%;
-      animation: fluid-flow 15s ease-in-out infinite;
-      transition: all 2s ease-in-out;
-    }
-
-    .breathing-bg::before,
-    .breathing-bg::after {
-      content: '';
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(100px);
-      opacity: 0.6;
-    }
-
-    .breathing-bg::before {
-      width: 50vw;
-      height: 50vw;
-      max-width: 500px;
-      max-height: 500px;
-      top: -10%;
-      left: -5%;
-      background: var(--blob-color-1, rgba(196, 181, 253, 0.6));
-      animation: blob-float-1 12s ease-in-out infinite;
-    }
-
-    .breathing-bg::after {
-      width: 45vw;
-      height: 45vw;
-      max-width: 450px;
-      max-height: 450px;
-      bottom: -10%;
-      right: -5%;
-      background: var(--blob-color-2, rgba(147, 197, 253, 0.6));
-      animation: blob-float-2 14s ease-in-out infinite;
-    }
-
-    @keyframes fluid-flow {
-      0%, 100% {
-        background-position: 0% 50%;
-      }
-      25% {
-        background-position: 50% 100%;
-      }
-      50% {
-        background-position: 100% 50%;
-      }
-      75% {
-        background-position: 50% 0%;
-      }
-    }
-
-    @keyframes blob-float-1 {
-      0%, 100% {
-        transform: translate(0, 0) scale(1);
-        opacity: 0.5;
-      }
-      33% {
-        transform: translate(5%, 10%) scale(1.1);
-        opacity: 0.6;
-      }
-      66% {
-        transform: translate(-3%, 5%) scale(0.95);
-        opacity: 0.5;
-      }
-    }
-
-    @keyframes blob-float-2 {
-      0%, 100% {
-        transform: translate(0, 0) scale(1);
-        opacity: 0.5;
-      }
-      33% {
-        transform: translate(-5%, -8%) scale(0.9);
-        opacity: 0.6;
-      }
-      66% {
-        transform: translate(4%, -3%) scale(1.05);
-        opacity: 0.55;
-      }
-    }
-
-    /* 不同阶段的颜色主题 - 淡紫到浅蓝渐变 */
-    .breathing-bg.stage-0 {
-      --fluid-color-1: rgba(196, 181, 253, 0.5);
-      --fluid-color-2: rgba(167, 139, 250, 0.4);
-      --fluid-color-3: rgba(165, 180, 252, 0.5);
-      --fluid-color-4: rgba(147, 197, 253, 0.4);
-      --fluid-color-5: rgba(186, 230, 253, 0.5);
-      --blob-color-1: rgba(196, 181, 253, 0.6);
-      --blob-color-2: rgba(147, 197, 253, 0.6);
-    }
-    .breathing-bg.stage-1 {
-      --fluid-color-1: rgba(167, 139, 250, 0.5);
-      --fluid-color-2: rgba(139, 92, 246, 0.35);
-      --fluid-color-3: rgba(165, 180, 252, 0.5);
-      --fluid-color-4: rgba(129, 140, 248, 0.4);
-      --fluid-color-5: rgba(147, 197, 253, 0.5);
-      --blob-color-1: rgba(167, 139, 250, 0.55);
-      --blob-color-2: rgba(129, 140, 248, 0.6);
-    }
-    .breathing-bg.stage-2 {
-      --fluid-color-1: rgba(165, 180, 252, 0.5);
-      --fluid-color-2: rgba(129, 140, 248, 0.4);
-      --fluid-color-3: rgba(147, 197, 253, 0.5);
-      --fluid-color-4: rgba(125, 211, 252, 0.4);
-      --fluid-color-5: rgba(186, 230, 253, 0.5);
-      --blob-color-1: rgba(165, 180, 252, 0.6);
-      --blob-color-2: rgba(147, 197, 253, 0.55);
-    }
-    .breathing-bg.stage-3 {
-      --fluid-color-1: rgba(147, 197, 253, 0.5);
-      --fluid-color-2: rgba(125, 211, 252, 0.4);
-      --fluid-color-3: rgba(186, 230, 253, 0.5);
-      --fluid-color-4: rgba(165, 180, 252, 0.35);
-      --fluid-color-5: rgba(199, 210, 254, 0.5);
-      --blob-color-1: rgba(147, 197, 253, 0.6);
-      --blob-color-2: rgba(186, 230, 253, 0.55);
-    }
-    .breathing-bg.stage-4 {
-      --fluid-color-1: rgba(186, 230, 253, 0.5);
-      --fluid-color-2: rgba(147, 197, 253, 0.4);
-      --fluid-color-3: rgba(199, 210, 254, 0.5);
-      --fluid-color-4: rgba(196, 181, 253, 0.4);
-      --fluid-color-5: rgba(224, 231, 255, 0.5);
-      --blob-color-1: rgba(186, 230, 253, 0.55);
-      --blob-color-2: rgba(196, 181, 253, 0.6);
-    }
-
-    /* 过渡动画 */
-    .breathing-bg::before,
-    .breathing-bg::after {
-      transition: background 2.5s ease-in-out;
-    }
-
-    /* 玻璃拟态卡片样式 */
-    .cartoon-border {
-      border: 1px solid rgba(255, 255, 255, 0.5);
-      border-radius: 24px;
-      background: rgba(255, 255, 255, 0.7);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      box-shadow: 
-        0 8px 32px rgba(0, 0, 0, 0.08),
-        inset 0 1px 0 rgba(255, 255, 255, 0.9);
-    }
-
-    .cartoon-border-thin {
-      border: 1px solid rgba(255, 255, 255, 0.4);
-      border-radius: 20px;
-      background: rgba(255, 255, 255, 0.6);
-      backdrop-filter: blur(15px);
-      -webkit-backdrop-filter: blur(15px);
-      box-shadow: 
-        0 6px 24px rgba(0, 0, 0, 0.06),
-        inset 0 1px 0 rgba(255, 255, 255, 0.8);
-    }
-
-    /* 动画 */
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-15px); }
-    }
-
-    @keyframes pulse-scale {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.1); }
-    }
-
-    @keyframes wiggle {
-      0%, 100% { transform: rotate(0deg); }
-      25% { transform: rotate(-5deg); }
-      75% { transform: rotate(5deg); }
-    }
-
-    @keyframes bounce-in {
-      0% { transform: scale(0); opacity: 0; }
-      50% { transform: scale(1.1); }
-      100% { transform: scale(1); opacity: 1; }
-    }
-
-    @keyframes slide-in {
-      from { transform: translateX(50px); opacity: 0; }
-      to { transform: translateX(0); opacity: 1; }
-    }
-
-    @keyframes progress-grow {
-      from { width: 0; }
-    }
-
-    .animate-float {
-      animation: float 3s ease-in-out infinite;
-    }
-
-    .animate-pulse-scale {
-      animation: pulse-scale 2s ease-in-out infinite;
-    }
-
-    .animate-wiggle {
-      animation: wiggle 2s ease-in-out infinite;
-    }
-
-    .animate-bounce-in {
-      animation: bounce-in 0.5s ease-out forwards;
-    }
-
-    .animate-slide-in {
-      animation: slide-in 0.4s ease-out forwards;
-    }
-
-    /* 按钮 - 果冻玻璃拟态风格 */
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 14px 28px;
-      font-size: 16px;
-      font-weight: 700;
-      border: none;
-      border-radius: 50px;
-      cursor: pointer;
-      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-      position: relative;
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-    }
-
-    .btn:hover {
-      transform: translateY(-3px) scale(1.02);
-    }
-
-    .btn:active {
-      animation: jelly-press 0.4s ease;
-    }
-
-    @keyframes jelly-press {
-      0% { transform: scale(1); }
-      30% { transform: scale(0.92, 1.08); }
-      50% { transform: scale(1.05, 0.95); }
-      70% { transform: scale(0.98, 1.02); }
-      100% { transform: scale(1); }
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, rgba(74, 222, 128, 0.85), rgba(34, 197, 94, 0.9));
-      color: var(--primary-foreground);
-      box-shadow: 
-        0 4px 15px rgba(74, 222, 128, 0.4),
-        inset 0 1px 0 rgba(255, 255, 255, 0.3),
-        inset 0 -1px 0 rgba(0, 0, 0, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.3);
-    }
-
-    .btn-primary:hover {
-      box-shadow: 
-        0 8px 25px rgba(74, 222, 128, 0.5),
-        inset 0 1px 0 rgba(255, 255, 255, 0.4),
-        inset 0 -1px 0 rgba(0, 0, 0, 0.1);
-    }
-
-    .btn-secondary {
-      background: linear-gradient(135deg, rgba(254, 243, 199, 0.85), rgba(253, 224, 71, 0.8));
-      color: var(--secondary-foreground);
-      box-shadow: 
-        0 4px 15px rgba(253, 224, 71, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.5),
-        inset 0 -1px 0 rgba(0, 0, 0, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.4);
-    }
-
-    .btn-secondary:hover {
-      box-shadow: 
-        0 8px 25px rgba(253, 224, 71, 0.4),
-        inset 0 1px 0 rgba(255, 255, 255, 0.6),
-        inset 0 -1px 0 rgba(0, 0, 0, 0.05);
-    }
-
-    .btn-outline {
-      background: rgba(255, 255, 255, 0.7);
-      color: var(--foreground);
-      border: 2px solid rgba(45, 45, 74, 0.2);
-      box-shadow: 
-        0 4px 15px rgba(0, 0, 0, 0.08),
-        inset 0 1px 0 rgba(255, 255, 255, 0.8);
-    }
-
-    .btn-outline:hover {
-      background: rgba(255, 255, 255, 0.85);
-      border-color: rgba(45, 45, 74, 0.3);
-      box-shadow: 
-        0 8px 25px rgba(0, 0, 0, 0.12),
-        inset 0 1px 0 rgba(255, 255, 255, 0.9);
-    }
-
-    .btn:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-      transform: none;
-      animation: none;
-    }
-
-    /* 页面容器 */
-    .page-container {
-      min-height: 100vh;
-      padding: 2rem 1rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      overflow: hidden;
-    }
-
-    /* 背景装饰 */
-    .bg-decoration {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(60px);
-      pointer-events: none;
-    }
-
-    .bg-pink {
-      background: var(--toon-pink);
-      opacity: 0.3;
-    }
-
-    .bg-blue {
-      background: var(--toon-blue);
-      opacity: 0.3;
-    }
-
-    .bg-yellow {
-      background: var(--toon-yellow);
-      opacity: 0.2;
-    }
-
-    /* 漂浮角色 */
-    .floating-characters {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-    }
-
-    .floating-char {
-      position: absolute;
-      font-size: 2rem;
-    }
-
-    /* 欢迎页面 */
-    .welcome-card {
-      background: rgba(255, 255, 255, 0.75);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      padding: 3rem;
-      max-width: 600px;
-      width: 100%;
-      text-align: center;
-      border: 1px solid rgba(255, 255, 255, 0.5);
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
-    }
-
-    .welcome-icon {
-      font-size: 4rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .welcome-title {
-      font-size: 2.5rem;
-      font-weight: 900;
-      margin-bottom: 1rem;
-    }
-
-    .welcome-title .primary {
-      color: var(--primary);
-    }
-
-    .welcome-desc {
-      color: var(--muted-foreground);
-      font-size: 1.1rem;
-      line-height: 1.6;
-      margin-bottom: 2rem;
-    }
-
-    .features {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 1rem;
-      margin-bottom: 2rem;
-    }
-
-    .feature-tag {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(255, 255, 255, 0.6);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      padding: 10px 18px;
-      border-radius: 50px;
-      font-size: 0.9rem;
-      font-weight: 600;
-      border: 1px solid rgba(255, 255, 255, 0.5);
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-
-    .feature-tag:hover {
-      transform: translateY(-2px) scale(1.02);
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
-    }
-
-    .welcome-note {
-      font-size: 0.75rem;
-      color: var(--muted-foreground);
-      margin-top: 1.5rem;
-    }
-
-    /* 测验页面 */
-    .quiz-container {
-      max-width: 700px;
-      width: 100%;
-      margin: 0 auto;
-    }
-
-    .quiz-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1.5rem;
-    }
-
-    .quiz-counter {
-      background: rgba(255, 255, 255, 0.7);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      padding: 8px 18px;
-      border-radius: 50px;
-      font-size: 0.9rem;
-      font-weight: 600;
-      border: 1px solid rgba(255, 255, 255, 0.5);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    }
-
-    /* 进度条 */
-    .progress-container {
-      margin-bottom: 1.5rem;
-    }
-
-    .progress-header {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 0.5rem;
-      font-size: 0.9rem;
-      font-weight: 700;
-    }
-
-    .progress-bar {
-      height: 24px;
-      background: rgba(255, 255, 255, 0.5);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border-radius: 50px;
-      border: 1px solid rgba(255, 255, 255, 0.6);
-      overflow: hidden;
-      position: relative;
-      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
-    }
-
-    .progress-fill {
-      height: 100%;
-      background: linear-gradient(90deg, rgba(74, 222, 128, 0.9), rgba(34, 197, 94, 0.95));
-      border-radius: 50px;
-      position: relative;
-      transition: width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-      box-shadow: 0 0 15px rgba(74, 222, 128, 0.4);
-    }
-
-    .progress-fill::after {
-      content: '⭐';
-      position: absolute;
-      right: 4px;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 0.8rem;
-      animation: pulse-scale 1s infinite;
-    }
-
-    .progress-text {
-      text-align: center;
-      font-size: 0.75rem;
-      color: var(--muted-foreground);
-      margin-top: 0.5rem;
-    }
-
-    /* 问题卡片 */
-    .question-card {
-      background: var(--card);
-      padding: 2rem;
-    }
-
-    .question-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1.5rem;
-    }
-
-    .question-number {
-      background: rgba(255, 255, 255, 0.7);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      padding: 6px 14px;
-      border-radius: 50px;
-      font-size: 0.85rem;
-      font-weight: 700;
-      border: 1px solid rgba(255, 255, 255, 0.5);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    }
-
-    .question-factor {
-      background: rgba(255, 255, 255, 0.5);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      padding: 4px 12px;
-      border-radius: 50px;
-      font-size: 0.75rem;
-      color: var(--muted-foreground);
-      border: 1px solid rgba(255, 255, 255, 0.4);
-    }
-
-    .question-content {
-      text-align: center;
-      padding: 2rem 1rem;
-      position: relative;
-    }
-
-    .question-icon {
-      position: absolute;
-      top: 0;
-      left: 0;
-      font-size: 1.5rem;
-    }
-
-    .question-intro {
-      font-size: 1.1rem;
-      margin-bottom: 1rem;
-    }
-
-    .question-text {
-      font-size: 1.5rem;
-      font-weight: 800;
-      color: var(--primary);
-    }
-
-    /* 答案选项 */
-    .answers {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 0.5rem;
-      margin-top: 1.5rem;
-    }
-
-    .answer-btn {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
-      padding: 1rem 0.5rem;
-      border: 1px solid rgba(255, 255, 255, 0.4);
-      border-radius: 20px;
-      background: rgba(255, 255, 255, 0.6);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      cursor: pointer;
-      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-      box-shadow: 
-        0 4px 15px rgba(0, 0, 0, 0.05),
-        inset 0 1px 0 rgba(255, 255, 255, 0.8);
-    }
-
-    .answer-btn:hover {
-      background: rgba(255, 255, 255, 0.8);
-      transform: translateY(-3px) scale(1.03);
-      box-shadow: 
-        0 8px 25px rgba(0, 0, 0, 0.1),
-        inset 0 1px 0 rgba(255, 255, 255, 0.9);
-      border-color: rgba(147, 197, 253, 0.5);
-    }
-
-    .answer-btn:active {
-      animation: jelly-press 0.4s ease;
-    }
-
-    .answer-btn.selected {
-      background: linear-gradient(135deg, rgba(74, 222, 128, 0.85), rgba(34, 197, 94, 0.9));
-      color: var(--primary-foreground);
-      border-color: rgba(255, 255, 255, 0.4);
-      transform: translateY(-2px) scale(1.02);
-      box-shadow: 
-        0 6px 20px rgba(74, 222, 128, 0.4),
-        inset 0 1px 0 rgba(255, 255, 255, 0.3);
-    }
-
-    .answer-emoji {
-      font-size: 1.5rem;
-    }
-
-    .answer-label {
-      font-size: 0.75rem;
-      font-weight: 600;
-    }
-
-    /* 导航按钮 */
-    .nav-buttons {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 1.5rem;
-    }
-
-    .nav-hint {
-      text-align: center;
-      font-size: 0.75rem;
-      color: var(--muted-foreground);
-      margin-top: 1rem;
-    }
-
-    /* 快速跳转 */
-    .quick-nav {
-      margin-top: 1.5rem;
-      padding: 1rem;
-      background: rgba(255, 255, 255, 0.5);
-      backdrop-filter: blur(15px);
-      -webkit-backdrop-filter: blur(15px);
-      border-radius: 20px;
-      border: 1px solid rgba(255, 255, 255, 0.5);
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-    }
-
-    .quick-nav-title {
-      text-align: center;
-      font-size: 0.85rem;
-      color: var(--muted-foreground);
-      margin-bottom: 0.75rem;
-    }
-
-    .quick-nav-grid {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 4px;
-    }
-
-    .quick-nav-btn {
-      width: 28px;
-      height: 28px;
-      font-size: 0.7rem;
-      font-weight: 700;
-      border: 1px solid rgba(255, 255, 255, 0.5);
-      border-radius: 50%;
-      cursor: pointer;
-      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
-      backdrop-filter: blur(5px);
-      -webkit-backdrop-filter: blur(5px);
-    }
-
-    .quick-nav-btn.answered {
-      background: linear-gradient(135deg, rgba(74, 222, 128, 0.85), rgba(34, 197, 94, 0.9));
-      color: var(--primary-foreground);
-      box-shadow: 0 2px 8px rgba(74, 222, 128, 0.3);
-    }
-
-    .quick-nav-btn.current {
-      background: linear-gradient(135deg, rgba(248, 113, 113, 0.85), rgba(239, 68, 68, 0.9));
-      color: var(--accent-foreground);
-      box-shadow: 0 0 0 2px rgba(248, 113, 113, 0.5), 0 2px 8px rgba(248, 113, 113, 0.3);
-    }
-
-    .quick-nav-btn.unanswered {
-      background: rgba(255, 255, 255, 0.5);
-      color: var(--muted-foreground);
-    }
-
-    .quick-nav-btn:hover {
-      transform: scale(1.15);
-    }
-
-    .quick-nav-btn:active {
-      animation: jelly-press 0.3s ease;
-    }
-
-    /* 结果页面 */
-    .result-container {
-      max-width: 900px;
-      width: 100%;
-      padding: 2rem 1rem;
-    }
-
-    .result-header {
-      text-align: center;
-      margin-bottom: 2rem;
-    }
-
-    .result-celebrate {
-      font-size: 4rem;
-      margin-bottom: 1rem;
-    }
-
-    .result-title {
-      font-size: 2rem;
-      font-weight: 900;
-      margin-bottom: 0.5rem;
-    }
-
-    .result-subtitle {
-      color: var(--muted-foreground);
-    }
-
-    .result-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 1.5rem;
-    }
-
-    @media (min-width: 768px) {
-      .result-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-    }
-
-    /* 角色卡片 */
-    .character-card {
-      background: var(--card);
-      padding: 2rem;
-      text-align: center;
-    }
-
-    .character-avatar {
-      width: 160px;
-      height: 160px;
-      margin: 0 auto 1.5rem;
-    }
-
-    .character-name {
-      font-size: 1.75rem;
-      font-weight: 900;
-      margin-bottom: 0.5rem;
-    }
-
-    .character-type {
-      display: inline-block;
-      background: var(--primary);
-      color: var(--primary-foreground);
-      padding: 6px 16px;
-      border-radius: 20px;
-      font-size: 0.9rem;
-      font-weight: 700;
-      margin-bottom: 1rem;
-    }
-
-    .character-desc {
-      color: var(--muted-foreground);
-      line-height: 1.6;
-      margin-bottom: 1.5rem;
-    }
-
-    .character-advice {
-      background: var(--secondary);
-      padding: 1rem;
-      border-radius: 12px;
-    }
-
-    .advice-title {
-      font-weight: 700;
-      margin-bottom: 0.5rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-    }
-
-    .advice-text {
-      font-size: 0.9rem;
-      color: var(--muted-foreground);
-    }
-
-    /* 分数详情 */
-    .scores-card {
-      background: var(--card);
-      padding: 2rem;
-    }
-
-    .scores-title {
-      font-size: 1.25rem;
-      font-weight: 700;
-      margin-bottom: 1rem;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .total-score {
-      background: var(--secondary);
-      padding: 1rem;
-      border-radius: 12px;
-      margin-bottom: 1.5rem;
-    }
-
-    .total-score-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .total-score-value {
-      font-size: 1.75rem;
-      font-weight: 900;
-      color: var(--primary);
-    }
-
-    .total-score-note {
-      font-size: 0.75rem;
-      color: var(--muted-foreground);
-      margin-top: 0.5rem;
-    }
-
-    .factors-list {
-      max-height: 320px;
-      overflow-y: auto;
-      padding-right: 0.5rem;
-    }
-
-    .factor-item {
-      margin-bottom: 1rem;
-    }
-
-    .factor-header {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.9rem;
-      margin-bottom: 0.25rem;
-    }
-
-    .factor-name {
-      font-weight: 600;
-    }
-
-    .factor-score {
-      color: var(--muted-foreground);
-    }
-
-    .factor-bar {
-      height: 16px;
-      background: var(--muted);
-      border-radius: 8px;
-      overflow: hidden;
-      border: 2px solid rgba(45, 45, 74, 0.1);
-    }
-
-    .factor-fill {
-      height: 100%;
-      border-radius: 8px;
-      transition: width 0.5s ease-out;
-    }
-
-    .factor-fill.green { background: var(--toon-green); }
-    .factor-fill.yellow { background: var(--toon-yellow); }
-    .factor-fill.orange { background: var(--toon-orange); }
-    .factor-fill.red { background: var(--accent); }
-
-    .factor-advice {
-      font-size: 0.75rem;
-      color: var(--muted-foreground);
-      margin-top: 0.25rem;
-    }
-
-    /* 提示 */
-    .warning-box {
-      margin-top: 2rem;
-      padding: 1.5rem;
-      background: rgba(254, 243, 199, 0.5);
-      border-radius: 16px;
-      text-align: center;
-    }
-
-    .warning-title {
-      font-weight: 700;
-      margin-bottom: 0.5rem;
-    }
-
-    .warning-text {
-      font-size: 0.9rem;
-      color: var(--muted-foreground);
-    }
-
-    /* 结果操作按钮 */
-    .result-actions {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 1rem;
-      margin-top: 2rem;
-    }
-
-    /* 隐藏元素 */
-    .hidden {
-      display: none !important;
-    }
-
-    /* 音乐播放按钮 - 半透明圆形旋转风格 */
-    .music-toggle {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.75);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border: 2px solid rgba(0, 0, 0, 0.1);
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-      transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
-    }
-
-    .music-toggle:hover {
-      background: rgba(255, 255, 255, 0.9);
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-      transform: scale(1.05);
-    }
-
-    .music-toggle:active {
-      transform: scale(0.95);
-    }
-
-    /* 音乐图标容器 - 用于旋转 */
-    .music-icon {
-      width: 28px;
-      height: 28px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: transform 0.3s ease;
-    }
-
-    .music-icon svg {
-      width: 100%;
-      height: 100%;
-      fill: #333;
-      transition: fill 0.3s ease;
-    }
-
-    /* 播放状态 - 旋转动画 */
-    .music-toggle.playing {
-      background: rgba(76, 175, 80, 0.2);
-      border-color: rgba(76, 175, 80, 0.4);
-    }
-
-    .music-toggle.playing .music-icon {
-      animation: spin 3s linear infinite;
-    }
-
-    .music-toggle.playing .music-icon svg {
-      fill: #2e7d32;
-    }
-
-    @keyframes spin {
-      from {
-        transform: rotate(0deg);
-      }
-      to {
-        transform: rotate(360deg);
-      }
-    }
-
-    /* 响应式 */
-    @media (max-width: 640px) {
-      .welcome-card {
-        padding: 2rem 1.5rem;
-      }
-
-      .welcome-title {
-        font-size: 1.75rem;
-      }
-
-      .question-text {
-        font-size: 1.25rem;
-      }
-
-      .answers {
-        gap: 0.25rem;
-      }
-
-      .answer-btn {
-        padding: 0.75rem 0.25rem;
-      }
-
-      .answer-emoji {
-        font-size: 1.25rem;
-      }
-
-      .answer-label {
-        font-size: 0.65rem;
-      }
-
-      .character-avatar {
-        width: 120px;
-        height: 120px;
-      }
-    }
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SCL-90 心理测评 | 探索你的内心世界</title>
+  <meta name="description" content="有趣的SCL-90心理健康自评量表，用卡通风格探索你的内心世界">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --background: #fdf8f3;
+      --foreground: #2d2d4a;
+      --card: #ffffff;
+      --primary: #4ade80;
+      --primary-foreground: #ffffff;
+      --secondary: #fef3c7;
+      --secondary-foreground: #2d2d4a;
+      --muted: #f5f5f5;
+      --muted-foreground: #6b7280;
+      --accent: #f87171;
+      --accent-foreground: #ffffff;
+      --toon-pink: #f9a8d4;
+      --toon-blue: #93c5fd;
+      --toon-green: #86efac;
+      --toon-yellow: #fde047;
+      --toon-orange: #fdba74;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: var(--background);
+      color: var(--foreground);
+      min-height: 100vh;
+      overflow-x: hidden;
+      transition: background 1.5s ease-in-out;
+    }
+
+    /* 流体渐变背景 - 淡紫到浅蓝 */
+    .breathing-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+      background: linear-gradient(
+        135deg,
+        var(--fluid-color-1, rgba(196, 181, 253, 0.5)) 0%,
+        var(--fluid-color-2, rgba(165, 180, 252, 0.4)) 25%,
+        var(--fluid-color-3, rgba(147, 197, 253, 0.5)) 50%,
+        var(--fluid-color-4, rgba(186, 230, 253, 0.4)) 75%,
+        var(--fluid-color-5, rgba(224, 231, 255, 0.5)) 100%
+      );
+      background-size: 400% 400%;
+      animation: fluid-flow 15s ease-in-out infinite;
+      transition: all 2s ease-in-out;
+    }
+
+    .breathing-bg::before,
+    .breathing-bg::after {
+      content: '';
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(100px);
+      opacity: 0.6;
+    }
+
+    .breathing-bg::before {
+      width: 50vw;
+      height: 50vw;
+      max-width: 500px;
+      max-height: 500px;
+      top: -10%;
+      left: -5%;
+      background: var(--blob-color-1, rgba(196, 181, 253, 0.6));
+      animation: blob-float-1 12s ease-in-out infinite;
+    }
+
+    .breathing-bg::after {
+      width: 45vw;
+      height: 45vw;
+      max-width: 450px;
+      max-height: 450px;
+      bottom: -10%;
+      right: -5%;
+      background: var(--blob-color-2, rgba(147, 197, 253, 0.6));
+      animation: blob-float-2 14s ease-in-out infinite;
+    }
+
+    @keyframes fluid-flow {
+      0%, 100% {
+        background-position: 0% 50%;
+      }
+      25% {
+        background-position: 50% 100%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      75% {
+        background-position: 50% 0%;
+      }
+    }
+
+    @keyframes blob-float-1 {
+      0%, 100% {
+        transform: translate(0, 0) scale(1);
+        opacity: 0.5;
+      }
+      33% {
+        transform: translate(5%, 10%) scale(1.1);
+        opacity: 0.6;
+      }
+      66% {
+        transform: translate(-3%, 5%) scale(0.95);
+        opacity: 0.5;
+      }
+    }
+
+    @keyframes blob-float-2 {
+      0%, 100% {
+        transform: translate(0, 0) scale(1);
+        opacity: 0.5;
+      }
+      33% {
+        transform: translate(-5%, -8%) scale(0.9);
+        opacity: 0.6;
+      }
+      66% {
+        transform: translate(4%, -3%) scale(1.05);
+        opacity: 0.55;
+      }
+    }
+
+    /* 不同阶段的颜色主题 - 淡紫到浅蓝渐变 */
+    .breathing-bg.stage-0 {
+      --fluid-color-1: rgba(196, 181, 253, 0.5);
+      --fluid-color-2: rgba(167, 139, 250, 0.4);
+      --fluid-color-3: rgba(165, 180, 252, 0.5);
+      --fluid-color-4: rgba(147, 197, 253, 0.4);
+      --fluid-color-5: rgba(186, 230, 253, 0.5);
+      --blob-color-1: rgba(196, 181, 253, 0.6);
+      --blob-color-2: rgba(147, 197, 253, 0.6);
+    }
+    .breathing-bg.stage-1 {
+      --fluid-color-1: rgba(167, 139, 250, 0.5);
+      --fluid-color-2: rgba(139, 92, 246, 0.35);
+      --fluid-color-3: rgba(165, 180, 252, 0.5);
+      --fluid-color-4: rgba(129, 140, 248, 0.4);
+      --fluid-color-5: rgba(147, 197, 253, 0.5);
+      --blob-color-1: rgba(167, 139, 250, 0.55);
+      --blob-color-2: rgba(129, 140, 248, 0.6);
+    }
+    .breathing-bg.stage-2 {
+      --fluid-color-1: rgba(165, 180, 252, 0.5);
+      --fluid-color-2: rgba(129, 140, 248, 0.4);
+      --fluid-color-3: rgba(147, 197, 253, 0.5);
+      --fluid-color-4: rgba(125, 211, 252, 0.4);
+      --fluid-color-5: rgba(186, 230, 253, 0.5);
+      --blob-color-1: rgba(165, 180, 252, 0.6);
+      --blob-color-2: rgba(147, 197, 253, 0.55);
+    }
+    .breathing-bg.stage-3 {
+      --fluid-color-1: rgba(147, 197, 253, 0.5);
+      --fluid-color-2: rgba(125, 211, 252, 0.4);
+      --fluid-color-3: rgba(186, 230, 253, 0.5);
+      --fluid-color-4: rgba(165, 180, 252, 0.35);
+      --fluid-color-5: rgba(199, 210, 254, 0.5);
+      --blob-color-1: rgba(147, 197, 253, 0.6);
+      --blob-color-2: rgba(186, 230, 253, 0.55);
+    }
+    .breathing-bg.stage-4 {
+      --fluid-color-1: rgba(186, 230, 253, 0.5);
+      --fluid-color-2: rgba(147, 197, 253, 0.4);
+      --fluid-color-3: rgba(199, 210, 254, 0.5);
+      --fluid-color-4: rgba(196, 181, 253, 0.4);
+      --fluid-color-5: rgba(224, 231, 255, 0.5);
+      --blob-color-1: rgba(186, 230, 253, 0.55);
+      --blob-color-2: rgba(196, 181, 253, 0.6);
+    }
+
+    /* 过渡动画 */
+    .breathing-bg::before,
+    .breathing-bg::after {
+      transition: background 2.5s ease-in-out;
+    }
+
+    /* 玻璃拟态卡片样式 */
+    .cartoon-border {
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    }
+
+    .cartoon-border-thin {
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      box-shadow: 
+        0 6px 24px rgba(0, 0, 0, 0.06),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    }
+
+    /* 动画 */
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+    }
+
+    @keyframes pulse-scale {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
+    @keyframes wiggle {
+      0%, 100% { transform: rotate(0deg); }
+      25% { transform: rotate(-5deg); }
+      75% { transform: rotate(5deg); }
+    }
+
+    @keyframes bounce-in {
+      0% { transform: scale(0); opacity: 0; }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes slide-in {
+      from { transform: translateX(50px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    @keyframes progress-grow {
+      from { width: 0; }
+    }
+
+    .animate-float {
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .animate-pulse-scale {
+      animation: pulse-scale 2s ease-in-out infinite;
+    }
+
+    .animate-wiggle {
+      animation: wiggle 2s ease-in-out infinite;
+    }
+
+    .animate-bounce-in {
+      animation: bounce-in 0.5s ease-out forwards;
+    }
+
+    .animate-slide-in {
+      animation: slide-in 0.4s ease-out forwards;
+    }
+
+    /* 按钮 - 果冻玻璃拟态风格 */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 28px;
+      font-size: 16px;
+      font-weight: 700;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      position: relative;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .btn:hover {
+      transform: translateY(-3px) scale(1.02);
+    }
+
+    .btn:active {
+      animation: jelly-press 0.4s ease;
+    }
+
+    @keyframes jelly-press {
+      0% { transform: scale(1); }
+      30% { transform: scale(0.92, 1.08); }
+      50% { transform: scale(1.05, 0.95); }
+      70% { transform: scale(0.98, 1.02); }
+      100% { transform: scale(1); }
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, rgba(74, 222, 128, 0.85), rgba(34, 197, 94, 0.9));
+      color: var(--primary-foreground);
+      box-shadow: 
+        0 4px 15px rgba(74, 222, 128, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .btn-primary:hover {
+      box-shadow: 
+        0 8px 25px rgba(74, 222, 128, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-secondary {
+      background: linear-gradient(135deg, rgba(254, 243, 199, 0.85), rgba(253, 224, 71, 0.8));
+      color: var(--secondary-foreground);
+      box-shadow: 
+        0 4px 15px rgba(253, 224, 71, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.5),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+    }
+
+    .btn-secondary:hover {
+      box-shadow: 
+        0 8px 25px rgba(253, 224, 71, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.6),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.05);
+    }
+
+    .btn-outline {
+      background: rgba(255, 255, 255, 0.7);
+      color: var(--foreground);
+      border: 2px solid rgba(45, 45, 74, 0.2);
+      box-shadow: 
+        0 4px 15px rgba(0, 0, 0, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    }
+
+    .btn-outline:hover {
+      background: rgba(255, 255, 255, 0.85);
+      border-color: rgba(45, 45, 74, 0.3);
+      box-shadow: 
+        0 8px 25px rgba(0, 0, 0, 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+      animation: none;
+    }
+
+    /* 页面容器 */
+    .page-container {
+      min-height: 100vh;
+      padding: 2rem 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* 背景装饰 */
+    .bg-decoration {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(60px);
+      pointer-events: none;
+    }
+
+    .bg-pink {
+      background: var(--toon-pink);
+      opacity: 0.3;
+    }
+
+    .bg-blue {
+      background: var(--toon-blue);
+      opacity: 0.3;
+    }
+
+    .bg-yellow {
+      background: var(--toon-yellow);
+      opacity: 0.2;
+    }
+
+    /* 漂浮角色 */
+    .floating-characters {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .floating-char {
+      position: absolute;
+      font-size: 2rem;
+    }
+
+    /* 欢迎页面 */
+    .welcome-card {
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      padding: 3rem;
+      max-width: 600px;
+      width: 100%;
+      text-align: center;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+    }
+
+    .welcome-icon {
+      font-size: 4rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .welcome-title {
+      font-size: 2.5rem;
+      font-weight: 900;
+      margin-bottom: 1rem;
+    }
+
+    .welcome-title .primary {
+      color: var(--primary);
+    }
+
+    .welcome-desc {
+      color: var(--muted-foreground);
+      font-size: 1.1rem;
+      line-height: 1.6;
+      margin-bottom: 2rem;
+    }
+
+    .features {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .feature-tag {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      padding: 10px 18px;
+      border-radius: 50px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .feature-tag:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    .welcome-note {
+      font-size: 0.75rem;
+      color: var(--muted-foreground);
+      margin-top: 1.5rem;
+    }
+
+    /* 测验页面 */
+    .quiz-container {
+      max-width: 700px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .quiz-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .quiz-counter {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      padding: 8px 18px;
+      border-radius: 50px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    /* 进度条 */
+    .progress-container {
+      margin-bottom: 1.5rem;
+    }
+
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    .progress-bar {
+      height: 24px;
+      background: rgba(255, 255, 255, 0.5);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-radius: 50px;
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      overflow: hidden;
+      position: relative;
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, rgba(74, 222, 128, 0.9), rgba(34, 197, 94, 0.95));
+      border-radius: 50px;
+      position: relative;
+      transition: width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 0 0 15px rgba(74, 222, 128, 0.4);
+    }
+
+    .progress-fill::after {
+      content: '⭐';
+      position: absolute;
+      right: 4px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 0.8rem;
+      animation: pulse-scale 1s infinite;
+    }
+
+    .progress-text {
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--muted-foreground);
+      margin-top: 0.5rem;
+    }
+
+    /* 问题卡片 */
+    .question-card {
+      background: var(--card);
+      padding: 2rem;
+    }
+
+    .question-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .question-number {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      padding: 6px 14px;
+      border-radius: 50px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .question-factor {
+      background: rgba(255, 255, 255, 0.5);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      padding: 4px 12px;
+      border-radius: 50px;
+      font-size: 0.75rem;
+      color: var(--muted-foreground);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+    }
+
+    .question-content {
+      text-align: center;
+      padding: 2rem 1rem;
+      position: relative;
+    }
+
+    .question-icon {
+      position: absolute;
+      top: 0;
+      left: 0;
+      font-size: 1.5rem;
+    }
+
+    .question-intro {
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+    }
+
+    .question-text {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    /* 答案选项 */
+    .answers {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 0.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .answer-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      padding: 1rem 0.5rem;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 
+        0 4px 15px rgba(0, 0, 0, 0.05),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    }
+
+    .answer-btn:hover {
+      background: rgba(255, 255, 255, 0.8);
+      transform: translateY(-3px) scale(1.03);
+      box-shadow: 
+        0 8px 25px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.9);
+      border-color: rgba(147, 197, 253, 0.5);
+    }
+
+    .answer-btn:active {
+      animation: jelly-press 0.4s ease;
+    }
+
+    .answer-btn.selected {
+      background: linear-gradient(135deg, rgba(74, 222, 128, 0.85), rgba(34, 197, 94, 0.9));
+      color: var(--primary-foreground);
+      border-color: rgba(255, 255, 255, 0.4);
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 
+        0 6px 20px rgba(74, 222, 128, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    }
+
+    .answer-emoji {
+      font-size: 1.5rem;
+    }
+
+    .answer-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    /* 导航按钮 */
+    .nav-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 1.5rem;
+    }
+
+    .nav-hint {
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--muted-foreground);
+      margin-top: 1rem;
+    }
+
+    /* 快速跳转 */
+    .quick-nav {
+      margin-top: 1.5rem;
+      padding: 1rem;
+      background: rgba(255, 255, 255, 0.5);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    }
+
+    .quick-nav-title {
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--muted-foreground);
+      margin-bottom: 0.75rem;
+    }
+
+    .quick-nav-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 4px;
+    }
+
+    .quick-nav-btn {
+      width: 28px;
+      height: 28px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      border-radius: 50%;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+    }
+
+    .quick-nav-btn.answered {
+      background: linear-gradient(135deg, rgba(74, 222, 128, 0.85), rgba(34, 197, 94, 0.9));
+      color: var(--primary-foreground);
+      box-shadow: 0 2px 8px rgba(74, 222, 128, 0.3);
+    }
+
+    .quick-nav-btn.current {
+      background: linear-gradient(135deg, rgba(248, 113, 113, 0.85), rgba(239, 68, 68, 0.9));
+      color: var(--accent-foreground);
+      box-shadow: 0 0 0 2px rgba(248, 113, 113, 0.5), 0 2px 8px rgba(248, 113, 113, 0.3);
+    }
+
+    .quick-nav-btn.unanswered {
+      background: rgba(255, 255, 255, 0.5);
+      color: var(--muted-foreground);
+    }
+
+    .quick-nav-btn:hover {
+      transform: scale(1.15);
+    }
+
+    .quick-nav-btn:active {
+      animation: jelly-press 0.3s ease;
+    }
+
+    /* 结果页面 */
+    .result-container {
+      max-width: 900px;
+      width: 100%;
+      padding: 2rem 1rem;
+    }
+
+    .result-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .result-celebrate {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+    }
+
+    .result-title {
+      font-size: 2rem;
+      font-weight: 900;
+      margin-bottom: 0.5rem;
+    }
+
+    .result-subtitle {
+      color: var(--muted-foreground);
+    }
+
+    .result-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    @media (min-width: 768px) {
+      .result-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    /* 角色卡片 */
+    .character-card {
+      background: var(--card);
+      padding: 2rem;
+      text-align: center;
+    }
+
+    .character-avatar {
+      width: 160px;
+      height: 160px;
+      margin: 0 auto 1.5rem;
+    }
+
+    .character-name {
+      font-size: 1.75rem;
+      font-weight: 900;
+      margin-bottom: 0.5rem;
+    }
+
+    .character-type {
+      display: inline-block;
+      background: var(--primary);
+      color: var(--primary-foreground);
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    .character-desc {
+      color: var(--muted-foreground);
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+
+    .character-advice {
+      background: var(--secondary);
+      padding: 1rem;
+      border-radius: 12px;
+    }
+
+    .advice-title {
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .advice-text {
+      font-size: 0.9rem;
+      color: var(--muted-foreground);
+    }
+
+    /* 分数详情 */
+    .scores-card {
+      background: var(--card);
+      padding: 2rem;
+    }
+
+    .scores-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .total-score {
+      background: var(--secondary);
+      padding: 1rem;
+      border-radius: 12px;
+      margin-bottom: 1.5rem;
+    }
+
+    .total-score-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .total-score-value {
+      font-size: 1.75rem;
+      font-weight: 900;
+      color: var(--primary);
+    }
+
+    .total-score-note {
+      font-size: 0.75rem;
+      color: var(--muted-foreground);
+      margin-top: 0.5rem;
+    }
+
+    .factors-list {
+      max-height: 320px;
+      overflow-y: auto;
+      padding-right: 0.5rem;
+    }
+
+    .factor-item {
+      margin-bottom: 1rem;
+    }
+
+    .factor-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .factor-name {
+      font-weight: 600;
+    }
+
+    .factor-score {
+      color: var(--muted-foreground);
+    }
+
+    .factor-bar {
+      height: 16px;
+      background: var(--muted);
+      border-radius: 8px;
+      overflow: hidden;
+      border: 2px solid rgba(45, 45, 74, 0.1);
+    }
+
+    .factor-fill {
+      height: 100%;
+      border-radius: 8px;
+      transition: width 0.5s ease-out;
+    }
+
+    .factor-fill.green { background: var(--toon-green); }
+    .factor-fill.yellow { background: var(--toon-yellow); }
+    .factor-fill.orange { background: var(--toon-orange); }
+    .factor-fill.red { background: var(--accent); }
+
+    .factor-advice {
+      font-size: 0.75rem;
+      color: var(--muted-foreground);
+      margin-top: 0.25rem;
+    }
+
+    /* 提示 */
+    .warning-box {
+      margin-top: 2rem;
+      padding: 1.5rem;
+      background: rgba(254, 243, 199, 0.5);
+      border-radius: 16px;
+      text-align: center;
+    }
+
+    .warning-title {
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .warning-text {
+      font-size: 0.9rem;
+      color: var(--muted-foreground);
+    }
+
+    /* 结果操作按钮 */
+    .result-actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    /* 隐藏元素 */
+    .hidden {
+      display: none !important;
+    }
+
+    /* 音乐播放按钮 - 半透明圆形旋转风格 */
+    .music-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 2px solid rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+    }
+
+    .music-toggle:hover {
+      background: rgba(255, 255, 255, 0.9);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+      transform: scale(1.05);
+    }
+
+    .music-toggle:active {
+      transform: scale(0.95);
+    }
+
+    /* 音乐图标容器 - 用于旋转 */
+    .music-icon {
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.3s ease;
+    }
+
+    .music-icon svg {
+      width: 100%;
+      height: 100%;
+      fill: #333;
+      transition: fill 0.3s ease;
+    }
+
+    /* 播放状态 - 旋转动画 */
+    .music-toggle.playing {
+      background: rgba(76, 175, 80, 0.2);
+      border-color: rgba(76, 175, 80, 0.4);
+    }
+
+    .music-toggle.playing .music-icon {
+      animation: spin 3s linear infinite;
+    }
+
+    .music-toggle.playing .music-icon svg {
+      fill: #2e7d32;
+    }
+
+    @keyframes spin {
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* 响应式 */
+    @media (max-width: 640px) {
+      .welcome-card {
+        padding: 2rem 1.5rem;
+      }
+
+      .welcome-title {
+        font-size: 1.75rem;
+      }
+
+      .question-text {
+        font-size: 1.25rem;
+      }
+
+      .answers {
+        gap: 0.25rem;
+      }
+
+      .answer-btn {
+        padding: 0.75rem 0.25rem;
+      }
+
+      .answer-emoji {
+        font-size: 1.25rem;
+      }
+
+      .answer-label {
+        font-size: 0.65rem;
+      }
+
+      .character-avatar {
+        width: 120px;
+        height: 120px;
+      }
+    }
+  </style>
 </head>
 <body>
-  <!-- 呼吸感背景 -->
-  <div id="breathing-bg" class="breathing-bg stage-0"></div>
+  <!-- 呼吸感背景 -->
+  <div id="breathing-bg" class="breathing-bg stage-0"></div>
 
-  <!-- 背景音乐 - 请将音频文件路径替换为实际路径 -->
-  <audio id="bgm" loop preload="auto">
-    <!-- 替换为你的音频文件路径，支持 mp3, ogg, wav 格式 -->
-    <source src="./audio/bgm.mp3" type="audio/mpeg">
-    <source src="./audio/bgm.ogg" type="audio/ogg">
-    <source src="./audio/bgm.wav" type="audio/wav">
-  </audio>
+  <!-- 背景音乐 - 请将音频文件路径替换为实际路径 -->
+  <audio id="bgm" loop preload="auto">
+    <!-- 替换为你的音频文件路径，支持 mp3, ogg, wav 格式 -->
+    <source src="./audio/bgm.mp3" type="audio/mpeg">
+    <source src="./audio/bgm.ogg" type="audio/ogg">
+    <source src="./audio/bgm.wav" type="audio/wav">
+  </audio>
 
-  <!-- 音乐播放按钮 - 半透明圆形旋转风格 -->
-  <button id="music-toggle" class="music-toggle" onclick="toggleMusic()" title="点击播放/暂停音乐">
-    <div class="music-icon">
-      <!-- 音乐唱片图标 -->
-      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1.5"/>
-        <circle cx="12" cy="12" r="3" fill="currentColor"/>
-        <circle cx="12" cy="12" r="6" fill="none" stroke="currentColor" stroke-width="0.8" opacity="0.5"/>
-        <path d="M12 2 A10 10 0 0 1 22 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-      </svg>
-    </div>
-  </button>
+  <!-- 音乐播放按钮 - 半透明圆形旋转风格 -->
+  <button id="music-toggle" class="music-toggle" onclick="toggleMusic()" title="点击播放/暂停音乐">
+    <div class="music-icon">
+      <!-- 音乐唱片图标 -->
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1.5"/>
+        <circle cx="12" cy="12" r="3" fill="currentColor"/>
+        <circle cx="12" cy="12" r="6" fill="none" stroke="currentColor" stroke-width="0.8" opacity="0.5"/>
+        <path d="M12 2 A10 10 0 0 1 22 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </div>
+  </button>
 
-  <!-- 欢迎页面 -->
-  <div id="welcome-page" class="page-container">
-    <div class="bg-decoration bg-pink" style="width: 300px; height: 300px; top: -100px; left: -100px;"></div>
-    <div class="bg-decoration bg-blue" style="width: 400px; height: 400px; bottom: -150px; right: -150px;"></div>
-    <div class="bg-decoration bg-yellow" style="width: 500px; height: 500px; top: 50%; left: 50%; transform: translate(-50%, -50%);"></div>
-    
-    <div class="floating-characters">
-      <span class="floating-char animate-float" style="left: 10%; top: 20%; animation-delay: 0s;">☀️</span>
-      <span class="floating-char animate-float" style="left: 85%; top: 15%; animation-delay: 0.5s;">☁️</span>
-      <span class="floating-char animate-float" style="left: 8%; top: 60%; animation-delay: 1s;">🐑</span>
-      <span class="floating-char animate-float" style="left: 88%; top: 55%; animation-delay: 1.5s;">🧚</span>
-      <span class="floating-char animate-float" style="left: 15%; top: 85%; animation-delay: 2s;">🔥</span>
-      <span class="floating-char animate-float" style="left: 80%; top: 80%; animation-delay: 2.5s;">🧭</span>
-    </div>
+  <!-- 欢迎页面 -->
+  <div id="welcome-page" class="page-container">
+    <div class="bg-decoration bg-pink" style="width: 300px; height: 300px; top: -100px; left: -100px;"></div>
+    <div class="bg-decoration bg-blue" style="width: 400px; height: 400px; bottom: -150px; right: -150px;"></div>
+    <div class="bg-decoration bg-yellow" style="width: 500px; height: 500px; top: 50%; left: 50%; transform: translate(-50%, -50%);"></div>
+    
+    <div class="floating-characters">
+      <span class="floating-char animate-float" style="left: 10%; top: 20%; animation-delay: 0s;">☀️</span>
+      <span class="floating-char animate-float" style="left: 85%; top: 15%; animation-delay: 0.5s;">☁️</span>
+      <span class="floating-char animate-float" style="left: 8%; top: 60%; animation-delay: 1s;">🐑</span>
+      <span class="floating-char animate-float" style="left: 88%; top: 55%; animation-delay: 1.5s;">🧚</span>
+      <span class="floating-char animate-float" style="left: 15%; top: 85%; animation-delay: 2s;">🔥</span>
+      <span class="floating-char animate-float" style="left: 80%; top: 80%; animation-delay: 2.5s;">🧭</span>
+    </div>
 
-    <div class="welcome-card cartoon-border animate-bounce-in">
-      <div class="welcome-icon animate-wiggle">🎭</div>
-      <h1 class="welcome-title">
-        <span class="primary">SCL-90</span><br>心理健康自评
-      </h1>
-      <p class="welcome-desc">
-        来一场有趣的内心探索之旅吧！<br>
-        完成测评后，看看你像哪个可爱的角色~
-      </p>
-      <div class="features">
-        <span class="feature-tag">🕐 约15-20分钟完成</span>
-        <span class="feature-tag">🧠 90道专业题目</span>
-        <span class="feature-tag">💖 有趣的角色匹配</span>
-      </div>
-      <button class="btn btn-primary cartoon-border-thin" onclick="startQuiz()">
-        ✨ 开始探索 →
-      </button>
-      <p class="welcome-note">* 本测评基于SCL-90量表，仅供参考，不作为医学诊断依据</p>
-    </div>
-  </div>
+    <div class="welcome-card cartoon-border animate-bounce-in">
+      <div class="welcome-icon animate-wiggle">🎭</div>
+      <h1 class="welcome-title">
+        <span class="primary">SCL-90</span><br>心理健康自评
+      </h1>
+      <p class="welcome-desc">
+        来一场有趣的内心探索之旅吧！<br>
+        完成测评后，看看你像哪个可爱的角色~
+      </p>
+      <div class="features">
+        <span class="feature-tag">🕐 约15-20分钟完成</span>
+        <span class="feature-tag">🧠 90道专业题目</span>
+        <span class="feature-tag">💖 有趣的角色匹配</span>
+      </div>
+      <button class="btn btn-primary cartoon-border-thin" onclick="startQuiz()">
+        ✨ 开始探索 →
+      </button>
+      <p class="welcome-note">* 本测评基于SCL-90量表，仅供参考，不作为医学诊断依据</p>
+    </div>
+  </div>
 
-  <!-- 测验页面 -->
-  <div id="quiz-page" class="page-container hidden">
-    <div class="bg-decoration bg-pink" style="width: 200px; height: 200px; top: 50px; left: 50px; animation: pulse-scale 5s infinite;"></div>
-    <div class="bg-decoration bg-blue" style="width: 250px; height: 250px; bottom: 100px; right: 50px; animation: pulse-scale 6s infinite;"></div>
+  <!-- 测验页面 -->
+  <div id="quiz-page" class="page-container hidden">
+    <div class="bg-decoration bg-pink" style="width: 200px; height: 200px; top: 50px; left: 50px; animation: pulse-scale 5s infinite;"></div>
+    <div class="bg-decoration bg-blue" style="width: 250px; height: 250px; bottom: 100px; right: 50px; animation: pulse-scale 6s infinite;"></div>
 
-    <div class="quiz-container">
-      <div class="quiz-header">
-        <button class="btn btn-outline" onclick="exitQuiz()">退出测试</button>
-        <div class="quiz-counter cartoon-border-thin">
-          已答 <span id="answered-count">0</span> / 90
-        </div>
-      </div>
+    <div class="quiz-container">
+      <div class="quiz-header">
+        <button class="btn btn-outline" onclick="exitQuiz()">退出测试</button>
+        <div class="quiz-counter cartoon-border-thin">
+          已答 <span id="answered-count">0</span> / 90
+        </div>
+      </div>
 
-      <div class="progress-container">
-        <div class="progress-header">
-          <span>冒险进度</span>
-          <span id="progress-percent" style="color: var(--primary);">0%</span>
-        </div>
-        <div class="progress-bar">
-          <div id="progress-fill" class="progress-fill" style="width: 0%;"></div>
-        </div>
-        <p id="progress-text" class="progress-text">加油！冒险才刚刚开始~ 🚀</p>
-      </div>
+      <div class="progress-container">
+        <div class="progress-header">
+          <span>冒险进度</span>
+          <span id="progress-percent" style="color: var(--primary);">0%</span>
+        </div>
+        <div class="progress-bar">
+          <div id="progress-fill" class="progress-fill" style="width: 0%;"></div>
+        </div>
+        <p id="progress-text" class="progress-text">加油！冒险才刚刚开始~ 🚀</p>
+      </div>
 
-      <div class="question-card cartoon-border animate-slide-in" id="question-card">
-        <div class="question-header">
-          <span id="question-number" class="question-number">第 1 / 90 题</span>
-          <span id="question-factor" class="question-factor">躯体化</span>
-        </div>
-        <div class="question-content">
-          <span class="question-icon animate-wiggle">❓</span>
-          <p class="question-intro">在最近一周内，您是否有以下感受：</p>
-          <p id="question-text" class="question-text">「头痛」</p>
-        </div>
-        <div class="answers">
-          <button class="answer-btn" onclick="selectAnswer(1)" data-value="1">
-            <span class="answer-emoji">😊</span>
-            <span class="answer-label">没有</span>
-          </button>
-          <button class="answer-btn" onclick="selectAnswer(2)" data-value="2">
-            <span class="answer-emoji">🙂</span>
-            <span class="answer-label">很轻</span>
-          </button>
-          <button class="answer-btn" onclick="selectAnswer(3)" data-value="3">
-            <span class="answer-emoji">😐</span>
-            <span class="answer-label">中等</span>
-          </button>
-          <button class="answer-btn" onclick="selectAnswer(4)" data-value="4">
-            <span class="answer-emoji">😟</span>
-            <span class="answer-label">偏重</span>
-          </button>
-          <button class="answer-btn" onclick="selectAnswer(5)" data-value="5">
-            <span class="answer-emoji">😰</span>
-            <span class="answer-label">严重</span>
-          </button>
-        </div>
-      </div>
+      <div class="question-card cartoon-border animate-slide-in" id="question-card">
+        <div class="question-header">
+          <span id="question-number" class="question-number">第 1 / 90 题</span>
+          <span id="question-factor" class="question-factor">躯体化</span>
+        </div>
+        <div class="question-content">
+          <span class="question-icon animate-wiggle">❓</span>
+          <p class="question-intro">在最近一周内，您是否有以下感受：</p>
+          <p id="question-text" class="question-text">「头痛」</p>
+        </div>
+        <div class="answers">
+          <button class="answer-btn" onclick="selectAnswer(1)" data-value="1">
+            <span class="answer-emoji">😊</span>
+            <span class="answer-label">没有</span>
+          </button>
+          <button class="answer-btn" onclick="selectAnswer(2)" data-value="2">
+            <span class="answer-emoji">🙂</span>
+            <span class="answer-label">很轻</span>
+          </button>
+          <button class="answer-btn" onclick="selectAnswer(3)" data-value="3">
+            <span class="answer-emoji">😐</span>
+            <span class="answer-label">中等</span>
+          </button>
+          <button class="answer-btn" onclick="selectAnswer(4)" data-value="4">
+            <span class="answer-emoji">😟</span>
+            <span class="answer-label">偏重</span>
+          </button>
+          <button class="answer-btn" onclick="selectAnswer(5)" data-value="5">
+            <span class="answer-emoji">😰</span>
+            <span class="answer-label">严重</span>
+          </button>
+        </div>
+      </div>
 
-      <div class="nav-buttons">
-        <button id="prev-btn" class="btn btn-outline cartoon-border-thin" onclick="prevQuestion()" disabled>
-          ← 上一题
-        </button>
-        <button id="next-btn" class="btn btn-outline cartoon-border-thin" onclick="nextQuestion()" disabled>
-          下一题 →
-        </button>
-        <button id="complete-btn" class="btn btn-primary cartoon-border-thin hidden" onclick="showResult()">
-          查看结果 🎉
-        </button>
-      </div>
+      <div class="nav-buttons">
+        <button id="prev-btn" class="btn btn-outline cartoon-border-thin" onclick="prevQuestion()" disabled>
+          ← 上一题
+        </button>
+        <button id="next-btn" class="btn btn-outline cartoon-border-thin" onclick="nextQuestion()" disabled>
+          下一题 →
+        </button>
+        <button id="complete-btn" class="btn btn-primary cartoon-border-thin hidden" onclick="showResult()">
+          查看结果 🎉
+        </button>
+      </div>
 
-      <p class="nav-hint">💡 点击答案自动跳转下一题，也可以用按钮手动切换</p>
+      <p class="nav-hint">💡 点击答案自动跳转下一题，也可以用按钮手动切换</p>
 
-      <div id="quick-nav" class="quick-nav hidden">
-        <p class="quick-nav-title">📋 快速跳转到未答题目：</p>
-        <div id="quick-nav-grid" class="quick-nav-grid"></div>
-      </div>
-    </div>
-  </div>
+      <div id="quick-nav" class="quick-nav hidden">
+        <p class="quick-nav-title">📋 快速跳转到未答题目：</p>
+        <div id="quick-nav-grid" class="quick-nav-grid"></div>
+      </div>
+    </div>
+  </div>
 
-  <!-- 结果页面 -->
-  <div id="result-page" class="page-container hidden">
-    <div class="result-container">
-      <div class="result-header">
-        <div class="result-celebrate animate-wiggle">🎊</div>
-        <h1 class="result-title">测评完成！</h1>
-        <p class="result-subtitle">来看看你的内心世界像哪个角色吧~</p>
-      </div>
+  <!-- 结果页面 -->
+  <div id="result-page" class="page-container hidden">
+    <div class="result-container">
+      <div class="result-header">
+        <div class="result-celebrate animate-wiggle">🎊</div>
+        <h1 class="result-title">测评完成！</h1>
+        <p class="result-subtitle">来看看你的内心世界像哪个角色吧~</p>
+      </div>
 
-      <div class="
+      <div class="result-grid">
+        <!-- 角色卡片 -->
+        <div id="character-card" class="character-card cartoon-border animate-bounce-in">
+          <div id="character-avatar" class="character-avatar"></div>
+          <h2 id="character-name" class="character-name">阳光小太阳</h2>
+          <span id="character-type" class="character-type">乐观开朗型</span>
+          <p id="character-desc" class="character-desc"></p>
+          <div class="character-advice cartoon-border-thin">
+            <div class="advice-title">💡 小建议</div>
+            <p id="character-advice" class="advice-text"></p>
+          </div>
+        </div>
+
+        <!-- 分数详情 -->
+        <div class="scores-card cartoon-border animate-bounce-in" style="animation-delay: 0.2s;">
+          <h3 class="scores-title">📊 详细分析</h3>
+          <div class="total-score">
+            <div class="total-score-header">
+              <span class="font-semibold">平均得分</span>
+              <span id="total-score" class="total-score-value">0.00</span>
+            </div>
+            <p class="total-score-note">(1-5分，分数越低心理状态越健康)</p>
+          </div>
+          <div id="factors-list" class="factors-list"></div>
+        </div>
+      </div>
+
+      <div class="warning-box cartoon-border-thin">
+        <p class="warning-title">⚠️ 温馨提示：</p>
+        <p class="warning-text">
+          本测评仅供参考，不能作为医学诊断依据。如果您感到持续的心理困扰，
+          建议寻求专业心理咨询师或医生的帮助。记住，照顾好自己的心理健康是很重要的事情！💝
+        </p>
+      </div>
+
+      <div class="result-actions">
+        <button class="btn btn-primary cartoon-border-thin" onclick="restartQuiz()">
+          🔄 重新测试
+        </button>
+        <button class="btn btn-secondary cartoon-border-thin" onclick="shareResult()">
+          📤 分享结果
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // SCL-90 题目数据
+    const questions = [
+      { id: 1, text: "头痛", factor: "躯体化" },
+      { id: 2, text: "神经过敏，心中不踏实", factor: "焦虑" },
+      { id: 3, text: "头脑中有不必要的想法或字句盘旋", factor: "强迫" },
+      { id: 4, text: "头晕或晕倒", factor: "躯体化" },
+      { id: 5, text: "对异性的兴趣减退", factor: "其他" },
+      { id: 6, text: "对旁人责备求全", factor: "敌对" },
+      { id: 7, text: "感到别人能控制您的思想", factor: "偏执" },
+      { id: 8, text: "责怪别人制造麻烦", factor: "偏执" },
+      { id: 9, text: "忘记性大", factor: "其他" },
+      { id: 10, text: "担心自己的衣饰整齐及仪态的端正", factor: "强迫" },
+      { id: 11, text: "容易烦恼和激动", factor: "敌对" },
+      { id: 12, text: "胸痛", factor: "躯体化" },
+      { id: 13, text: "害怕空旷的场所或街道", factor: "恐怖" },
+      { id: 14, text: "感到自己的精力下降，活动减慢", factor: "抑郁" },
+      { id: 15, text: "想结束自己的生命", factor: "抑郁" },
+      { id: 16, text: "听到旁人听不到的声音", factor: "精神病性" },
+      { id: 17, text: "发抖", factor: "焦虑" },
+      { id: 18, text: "感到大多数人都不可信任", factor: "偏执" },
+      { id: 19, text: "胃口不好", factor: "其他" },
+      { id: 20, text: "容易哭泣", factor: "抑郁" },
+      { id: 21, text: "同异性相处时感到害羞不自在", factor: "人际敏感" },
+      { id: 22, text: "感到受骗，中了圈套或有人想抓住您", factor: "偏执" },
+      { id: 23, text: "无缘无故地突然感到害怕", factor: "焦虑" },
+      { id: 24, text: "自己不能控制地大发脾气", factor: "敌对" },
+      { id: 25, text: "怕单独出门", factor: "恐怖" },
+      { id: 26, text: "经常责怪自己", factor: "抑郁" },
+      { id: 27, text: "腰痛", factor: "躯体化" },
+      { id: 28, text: "感到难以完成任务", factor: "强迫" },
+      { id: 29, text: "感到孤独", factor: "抑郁" },
+      { id: 30, text: "感到苦闷", factor: "抑郁" },
+      { id: 31, text: "过分担忧", factor: "焦虑" },
+      { id: 32, text: "对事物不感兴趣", factor: "抑郁" },
+      { id: 33, text: "感到害怕", factor: "焦虑" },
+      { id: 34, text: "您的感情容易受到伤害", factor: "人际敏感" },
+      { id: 35, text: "旁人能知道您的私下想法", factor: "精神病性" },
+      { id: 36, text: "感到别人不理解您、不同情您", factor: "人际敏感" },
+      { id: 37, text: "感到人们对您不友好，不喜欢您", factor: "人际敏感" },
+      { id: 38, text: "做事��须做得很慢以保证做得正确", factor: "强迫" },
+      { id: 39, text: "心跳得很厉害", factor: "焦虑" },
+      { id: 40, text: "恶心或胃部不舒服", factor: "躯体化" },
+      { id: 41, text: "感到比不上他人", factor: "人际敏感" },
+      { id: 42, text: "肌肉酸痛", factor: "躯体化" },
+      { id: 43, text: "感到有人在监视您���谈论您", factor: "偏执" },
+      { id: 44, text: "难以入睡", factor: "其他" },
+      { id: 45, text: "做事必须反复检查", factor: "强迫" },
+      { id: 46, text: "难以作出决定", factor: "强迫" },
+      { id: 47, text: "怕乘电车、公共汽车、地铁或火车", factor: "恐怖" },
+      { id: 48, text: "呼吸有困难", factor: "躯体化" },
+      { id: 49, text: "一阵阵发冷或发热", factor: "躯体化" },
+      { id: 50, text: "因为感到害怕而避开某些东西、场合或活动", factor: "恐怖" },
+      { id: 51, text: "脑子变空了", factor: "强迫" },
+      { id: 52, text: "身体发麻或刺痛", factor: "躯体化" },
+      { id: 53, text: "喉咙有梗塞感", factor: "躯体化" },
+      { id: 54, text: "感到前途没有希望", factor: "抑郁" },
+      { id: 55, text: "不能集中注意力", factor: "强迫" },
+      { id: 56, text: "感到身体的某一部分软弱无力", factor: "躯体化" },
+      { id: 57, text: "感到紧张或容易紧张", factor: "焦虑" },
+      { id: 58, text: "感到手或脚发重", factor: "躯体化" },
+      { id: 59, text: "想到死亡的事", factor: "抑郁" },
+      { id: 60, text: "吃得太多", factor: "其他" },
+      { id: 61, text: "当别人看着您或谈论您时感到不自在", factor: "人际敏感" },
+      { id: 62, text: "有一些不属于您自己的想法", factor: "精神病性" },
+      { id: 63, text: "有想打人或伤害他人的冲动", factor: "敌对" },
+      { id: 64, text: "醒得太早", factor: "其他" },
+      { id: 65, text: "必须反复洗手、点数目或触摸某些东西", factor: "强迫" },
+      { id: 66, text: "睡得不稳不深", factor: "其他" },
+      { id: 67, text: "有想摔坏或破坏东西的冲动", factor: "敌对" },
+      { id: 68, text: "有一些别人没有的想法或念头", factor: "偏执" },
+      { id: 69, text: "感到对别人神经过敏", factor: "人际敏感" },
+      { id: 70, text: "在商店或电影院等人多的地方感到不自在", factor: "恐怖" },
+      { id: 71, text: "感到任何事情都很困难", factor: "抑郁" },
+      { id: 72, text: "一阵阵恐惧或惊恐", factor: "焦虑" },
+      { id: 73, text: "感到在公共场合吃东西很不舒服", factor: "恐怖" },
+      { id: 74, text: "经常与人争论", factor: "敌对" },
+      { id: 75, text: "单独一人时神经很紧张", factor: "恐怖" },
+      { id: 76, text: "别人对您的成绩没有作出恰当的评价", factor: "人际敏感" },
+      { id: 77, text: "即使和别人在一起也感到孤单", factor: "抑郁" },
+      { id: 78, text: "感到坐立不安心神不定", factor: "焦虑" },
+      { id: 79, text: "感到自己没有什么价值", factor: "抑郁" },
+      { id: 80, text: "感到熟悉的东西变得陌生或不像是真的", factor: "精神病性" },
+      { id: 81, text: "大叫或摔东西", factor: "敌对" },
+      { id: 82, text: "害怕会在公共场合晕倒", factor: "恐怖" },
+      { id: 83, text: "感到别人想占您的便宜", factor: "偏执" },
+      { id: 84, text: "为一些有关性的想法而很苦恼", factor: "精神病性" },
+      { id: 85, text: "您认为应该因为自己的过错而受到惩罚", factor: "精神病性" },
+      { id: 86, text: "感到要很快把事情做完", factor: "焦虑" },
+      { id: 87, text: "感到自己的身体有严重问题", factor: "精神病性" },
+      { id: 88, text: "从未感到和其他人很亲近", factor: "精神病性" },
+      { id: 89, text: "感到自己有罪", factor: "精神病性" },
+      { id: 90, text: "感到自己的脑子有毛病", factor: "精神病性" }
+    ];
+
+    // 因子定义
+    const factors = [
+      { id: "躯体化", name: "躯体化", questionIds: [1, 4, 12, 27, 40, 42, 48, 49, 52, 53, 56, 58] },
+      { id: "强迫", name: "强迫症状", questionIds: [3, 10, 28, 38, 45, 46, 51, 55, 65] },
+      { id: "人际敏感", name: "人际关系敏感", questionIds: [21, 34, 36, 37, 41, 61, 69, 76] },
+      { id: "抑郁", name: "抑郁", questionIds: [14, 15, 20, 26, 29, 30, 32, 54, 59, 71, 77, 79] },
+      { id: "焦虑", name: "焦虑", questionIds: [2, 17, 23, 31, 33, 39, 57, 72, 78, 86] },
+      { id: "敌对", name: "敌对", questionIds: [6, 11, 24, 63, 67, 74, 81] },
+      { id: "恐怖", name: "恐怖", questionIds: [13, 25, 47, 50, 70, 73, 75, 82] },
+      { id: "偏执", name: "偏执", questionIds: [7, 8, 18, 22, 43, 68, 83] },
+      { id: "精神病性", name: "精神病性", questionIds: [16, 35, 62, 80, 84, 85, 87, 88, 89, 90] }
+    ];
+
+    // 角色定义
+    const characters = [
+      {
+        id: "sunny", name: "阳光小太阳", personality: "乐观开朗型",
+        description: "你就像永远散发温暖的小太阳！内心充满正能量，面对困难总��保持微笑。你的心理状态非常健康，继续保持这种阳光的心态吧！",
+        advice: "你的心理健康状态很棒！建议继续保持积极的生活态度，多与朋友分享快乐，你的正能量也会感染身边的人~",
+        color: "#FFD93D", emoji: "☀️", scoreRange: { min: 0, max: 1.0 }
+      },
+      {
+        id: "dreamy", name: "梦想家小云朵", personality: "思考者型",
+        description: "你是一个敏感而有深度的思考者，就像漂浮在天空的云朵一样，有时会沉浸在自己的世界里。你的想象力丰富，但有时可能会过度担忧。",
+        advice: "建议你多与朋友交流分享，适当运动放松身心。试着把那些飘忽的云朵思绪，变成美丽的雨滴滋润生活~",
+        color: "#93c5fd", emoji: "☁️", scoreRange: { min: 1.0, max: 1.5 }
+      },
+      {
+        id: "gentle", name: "温柔小绵羊", personality: "敏感细腻型",
+        description: "你是一只温柔敏感的小绵羊，对周围的人和事都很在意。虽然有时会因为太在乎而感到压力，但你的善良和同理心是非常珍贵的品质。",
+        advice: "学会适当保护自己的情绪边界，记住照顾好自己才能更好地关心他人。多做一些让自己开心的事情吧~",
+        color: "#f9a8d4", emoji: "🐑", scoreRange: { min: 1.5, max: 2.0 }
+      },
+      {
+        id: "forest", name: "森林小精灵", personality: "内向独处型",
+        description: "你像森林中的小精灵，喜欢安静的环境，有时会回避热闹的人群。虽然你享受独处，但偶尔也需要走出舒适区，感受外面世界的美好。",
+        advice: "试着慢慢打开心扉，从小范围的社交开始。你会发现，这个世界其实有很多温暖在等着你~",
+        color: "#86efac", emoji: "🧚", scoreRange: { min: 2.0, max: 2.5 }
+      },
+      {
+        id: "warrior", name: "小火焰战士", personality: "热血冲动型",
+        description: "你是一个内心充满热情的小火焰！有时情绪来得快去得也快，容易被激怒，但你的热情和行动力也是独特的优势。",
+        advice: "学习一些情绪管理的方法，比如深呼吸或暂时离开让你烦躁的环境。把你的热情用在积极的事情上，你会更加闪耀！",
+        color: "#fdba74", emoji: "🔥", scoreRange: { min: 2.5, max: 3.0 }
+      },
+      {
+        id: "explorer", name: "迷雾小探险家", personality: "困惑迷茫型",
+        description: "你现在就像在迷雾中探险的小旅人，有些困惑和不安。别担心，每个人都会有这样的时期，重要的是找到正确的方向和帮助。",
+        advice: "强烈建议你与信任的家人朋友倾诉，或者寻求专业心理咨询师的帮助。记住，寻求帮助是勇敢的表现，你不是一个人在战斗！",
+        color: "#d1d5db", emoji: "🧭", scoreRange: { min: 3.0, max: 5.0 }
+      }
+    ];
+
+    // 状态
+    let currentQuestionIndex = 0;
+    let answers = {};
+
+    // 初始化快速导航
+    function initQuickNav() {
+      const grid = document.getElementById('quick-nav-grid');
+      grid.innerHTML = '';
+      for (let i = 0; i < 90; i++) {
+        const btn = document.createElement('button');
+        btn.className = 'quick-nav-btn unanswered';
+        btn.textContent = i + 1;
+        btn.onclick = () => goToQuestion(i);
+        grid.appendChild(btn);
+      }
+    }
+
+    // 更新快速导航状态
+    function updateQuickNav() {
+      const buttons = document.querySelectorAll('.quick-nav-btn');
+      buttons.forEach((btn, index) => {
+        btn.classList.remove('answered', 'current', 'unanswered');
+        if (answers[questions[index].id] !== undefined) {
+          btn.classList.add('answered');
+        } else if (index === currentQuestionIndex) {
+          btn.classList.add('current');
+        } else {
+          btn.classList.add('unanswered');
+        }
+      });
+
+      // 显示/隐藏快速导航
+      const answeredCount = Object.keys(answers).length;
+      document.getElementById('quick-nav').classList.toggle('hidden', answeredCount === 0 || answeredCount === 90);
+    }
+
+    // 开始测试
+    function startQuiz() {
+      document.getElementById('welcome-page').classList.add('hidden');
+      document.getElementById('quiz-page').classList.remove('hidden');
+      currentQuestionIndex = 0;
+      answers = {};
+      initQuickNav();
+      updateQuestion();
+    }
+
+    // 退出测试
+    function exitQuiz() {
+      if (confirm('确定要退出测试吗？当前进度将丢失。')) {
+        document.getElementById('quiz-page').classList.add('hidden');
+        document.getElementById('welcome-page').classList.remove('hidden');
+        currentQuestionIndex = 0;
+        answers = {};
+      }
+    }
+
+    // 更新问题显示
+    function updateQuestion() {
+      const question = questions[currentQuestionIndex];
+      document.getElementById('question-number').textContent = `第 ${currentQuestionIndex + 1} / 90 题`;
+      document.getElementById('question-factor').textContent = question.factor;
+      document.getElementById('question-text').textContent = `「${question.text}」`;
+
+      // 更新答案选中状态
+      const answerBtns = document.querySelectorAll('.answer-btn');
+      answerBtns.forEach(btn => {
+        const value = parseInt(btn.dataset.value);
+        btn.classList.toggle('selected', answers[question.id] === value);
+      });
+
+      // 更新导航按钮
+      document.getElementById('prev-btn').disabled = currentQuestionIndex === 0;
+      
+      const isLastQuestion = currentQuestionIndex === 89;
+      const isCurrentAnswered = answers[question.id] !== undefined;
+      const isAllAnswered = Object.keys(answers).length === 90;
+
+      document.getElementById('next-btn').classList.toggle('hidden', isLastQuestion);
+      document.getElementById('next-btn').disabled = !isCurrentAnswered;
+      document.getElementById('complete-btn').classList.toggle('hidden', !isLastQuestion);
+      document.getElementById('complete-btn').disabled = !isAllAnswered;
+      document.getElementById('complete-btn').textContent = isAllAnswered ? '查看结果 🎉' : `还剩 ${90 - Object.keys(answers).length} 题未答`;
+
+      // 更新进度
+      updateProgress();
+      updateQuickNav();
+
+      // 添加动画效果
+      const card = document.getElementById('question-card');
+      card.style.animation = 'none';
+      card.offsetHeight; // 触发重排
+      card.style.animation = 'slide-in 0.4s ease-out forwards';
+    }
+
+    // 更新进度
+    function updateProgress() {
+      const answeredCount = Object.keys(answers).length;
+      const percentage = Math.round((answeredCount / 90) * 100);
+      
+      document.getElementById('answered-count').textContent = answeredCount;
+      document.getElementById('progress-percent').textContent = percentage + '%';
+      document.getElementById('progress-fill').style.width = percentage + '%';
+
+      let text = '';
+      if (percentage < 25) text = "加油！冒险才刚刚开始~ 🚀";
+      else if (percentage < 50) text = "太棒了！你已经完成四分之一啦~ 💪";
+      else if (percentage < 75) text = "哇！一半都完成了，继续加油~ 🎯";
+      else if (percentage < 100) text = "马上就要到终点了！冲鸭~ 🏃";
+      else text = "恭喜完成！准备揭晓结果~ 🎉";
+      document.getElementById('progress-text').textContent = text;
+    }
+
+    // 选择答案
+    function selectAnswer(value) {
+      const question = questions[currentQuestionIndex];
+      answers[question.id] = value;
+      updateQuestion();
+
+      // 自动跳转下一题
+      setTimeout(() => {
+        if (currentQuestionIndex < 89) {
+          currentQuestionIndex++;
+          updateQuestion();
+        }
+      }, 300);
+    }
+
+    // 上一题
+    function prevQuestion() {
+      if (currentQuestionIndex > 0) {
+        currentQuestionIndex--;
+        updateQuestion();
+      }
+    }
+
+    // 下一题
+    function nextQuestion() {
+      if (currentQuestionIndex < 89) {
+        currentQuestionIndex++;
+        updateQuestion();
+      }
+    }
+
+    // 跳转到指定题目
+    function goToQuestion(index) {
+      currentQuestionIndex = index;
+      updateQuestion();
+    }
+
+    // 计算分数
+    function calculateScores() {
+      const totalScore = Object.values(answers).reduce((sum, val) => sum + val, 0);
+      const averageScore = totalScore / 90;
+
+      const factorScores = {};
+      factors.forEach(factor => {
+        const factorAnswers = factor.questionIds.filter(id => answers[id] !== undefined).map(id => answers[id]);
+        const factorTotal = factorAnswers.reduce((sum, val) => sum + val, 0);
+        factorScores[factor.id] = {
+          name: factor.name,
+          total: factorTotal,
+          count: factorAnswers.length,
+          average: factorAnswers.length > 0 ? factorTotal / factorAnswers.length : 0
+        };
+      });
+
+      return { totalScore, averageScore, factorScores };
+    }
+
+    // 匹配角色
+    function matchCharacter(averageScore) {
+      return characters.find(char => averageScore >= char.scoreRange.min && averageScore < char.scoreRange.max) || characters[characters.length - 1];
+    }
+
+    // 获取因子建议
+    function getFactorAdvice(score) {
+      if (score < 1.5) return "状态良好，继续保持！";
+      if (score < 2.0) return "轻微困扰，可以尝试自我调节";
+      if (score < 2.5) return "有一定困扰，建议关注并调整";
+      if (score < 3.0) return "需要重点关注，建议寻求支持";
+      return "建议及时寻求专业帮助";
+    }
+
+    // 获取分数颜色类
+    function getScoreColorClass(score) {
+      if (score < 1.5) return "green";
+      if (score < 2.0) return "yellow";
+      if (score < 2.5) return "orange";
+      return "red";
+    }
+
+    // 生成角色头像SVG
+    function generateCharacterAvatar(character) {
+      const svgMap = {
+        sunny: `<svg viewBox="0 0 100 100" style="width: 100%; height: 100%;">
+          ${[...Array(12)].map((_, i) => `<rect x="47" y="5" width="6" height="15" rx="3" fill="#FFD93D" transform="rotate(${i * 30} 50 50)"/>`).join('')}
+          <circle cx="50" cy="50" r="25" fill="#FFD93D" stroke="#2D2D2D" stroke-width="3"/>
+          <circle cx="42" cy="46" r="4" fill="#2D2D2D"/>
+          <circle cx="58" cy="46" r="4" fill="#2D2D2D"/>
+          <path d="M 40 55 Q 50 65 60 55" stroke="#2D2D2D" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <circle cx="35" cy="52" r="5" fill="#FFB3B3" opacity="0.6"/>
+          <circle cx="65" cy="52" r="5" fill="#FFB3B3" opacity="0.6"/>
+        </svg>`,
+        dreamy: `<svg viewBox="0 0 100 100" style="width: 100%; height: 100%;">
+          <ellipse cx="50" cy="55" rx="35" ry="25" fill="#A8D8EA" stroke="#2D2D2D" stroke-width="3"/>
+          <circle cx="25" cy="50" r="18" fill="#A8D8EA" stroke="#2D2D2D" stroke-width="3"/>
+          <circle cx="75" cy="50" r="18" fill="#A8D8EA" stroke="#2D2D2D" stroke-width="3"/>
+          <circle cx="40" cy="35" r="15" fill="#A8D8EA" stroke="#2D2D2D" stroke-width="3"/>
+          <circle cx="60" cy="35" r="15" fill="#A8D8EA" stroke="#2D2D2D" stroke-width="3"/>
+          <ellipse cx="50" cy="55" rx="33" ry="23" fill="#A8D8EA"/>
+          <circle cx="40" cy="52" r="4" fill="#2D2D2D"/>
+          <circle cx="60" cy="52" r="4" fill="#2D2D2D"/>
+          <ellipse cx="50" cy="62" rx="5" ry="3" fill="#2D2D2D"/>
+          <text x="78" y="30" font-size="12">✨</text>
+        </svg>`,
+        gentle: `<svg viewBox="0 0 100 100" style="width: 100%; height: 100%;">
+          <ellipse cx="50" cy="65" rx="30" ry="25" fill="#FFF5E6" stroke="#2D2D2D" stroke-width="3"/>
+          <circle cx="50" cy="38" r="22" fill="#FFF5E6" stroke="#2D2D2D" stroke-width="3"/>
+          <ellipse cx="32" cy="25" rx="6" ry="12" fill="#FFF5E6" stroke="#2D2D2D" stroke-width="3"/>
+          <ellipse cx="68" cy="25" rx="6" ry="12" fill="#FFF5E6" stroke="#2D2D2D" stroke-width="3"/>
+          <ellipse cx="32" cy="25" rx="3" ry="6" fill="#FFB3B3"/>
+          <ellipse cx="68" cy="25" rx="3" ry="6" fill="#FFB3B3"/>
+          <ellipse cx="42" cy="36" rx="3" ry="4" fill="#2D2D2D"/>
+          <ellipse cx="58" cy="36" rx="3" ry="4" fill="#2D2D2D"/>
+          <ellipse cx="50" cy="42" rx="4" ry="3" fill="#FFB3B3"/>
+          <path d="M 45 48 Q 50 52 55 48" stroke="#2D2D2D" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <circle cx="35" cy="42" r="4" fill="#FFB3B3" opacity="0.5"/>
+          <circle cx="65" cy="42" r="4" fill="#FFB3B3" opacity="0.5"/>
+        </svg>`,
+        forest: `<svg viewBox="0 0 100 100" style="width: 100%; height: 100%;">
+          <ellipse cx="50" cy="70" rx="20" ry="18" fill="#98D8AA" stroke="#2D2D2D" stroke-width="3"/>
+          <circle cx="50" cy="42" r="20" fill="#98D8AA" stroke="#2D2D2D" stroke-width="3"/>
+          <path d="M 25 35 L 32 42 L 30 50" fill="#98D8AA" stroke="#2D2D2D" stroke-width="3" stroke-linejoin="round"/>
+          <path d="M 75 35 L 68 42 L 70 50" fill="#98D8AA" stroke="#2D2D2D" stroke-width="3" stroke-linejoin="round"/>
+          <circle cx="42" cy="40" r="5" fill="#2D2D2D"/>
+          <circle cx="58" cy="40" r="5" fill="#2D2D2D"/>
+          <circle cx="44" cy="38" r="2" fill="white"/>
+          <circle cx="60" cy="38" r="2" fill="white"/>
+          <circle cx="50" cy="50" r="3" fill="#2D2D2D"/>
+          <path d="M 50 22 Q 55 15 50 10 Q 45 15 50 22" fill="#5BB377" stroke="#2D2D2D" stroke-width="2"/>
+          <ellipse cx="25" cy="55" rx="12" ry="8" fill="#B8F3B8" stroke="#2D2D2D" stroke-width="2"/>
+          <ellipse cx="75" cy="55" rx="12" ry="8" fill="#B8F3B8" stroke="#2D2D2D" stroke-width="2"/>
+        </svg>`,
+        warrior: `<svg viewBox="0 0 100 100" style="width: 100%; height: 100%;">
+          <path d="M 50 10 Q 70 30 65 50 Q 75 45 70 65 Q 80 70 65 85 Q 50 95 35 85 Q 20 70 30 65 Q 25 45 35 50 Q 30 30 50 10" fill="#FF6B35" stroke="#2D2D2D" stroke-width="3"/>
+          <path d="M 50 25 Q 62 40 58 55 Q 65 52 60 70 Q 50 80 40 70 Q 35 52 42 55 Q 38 40 50 25" fill="#FFD93D"/>
+          <circle cx="42" cy="50" r="4" fill="#2D2D2D"/>
+          <circle cx="58" cy="50" r="4" fill="#2D2D2D"/>
+          <path d="M 36 44 L 46 46" stroke="#2D2D2D" stroke-width="3" stroke-linecap="round"/>
+          <path d="M 64 44 L 54 46" stroke="#2D2D2D" stroke-width="3" stroke-linecap="round"/>
+          <path d="M 45 60 L 55 60" stroke="#2D2D2D" stroke-width="3" stroke-linecap="round"/>
+        </svg>`,
+        explorer: `<svg viewBox="0 0 100 100" style="width: 100%; height: 100%;">
+          <ellipse cx="50" cy="70" rx="22" ry="20" fill="#C4C4C4" stroke="#2D2D2D" stroke-width="3"/>
+          <circle cx="50" cy="40" r="22" fill="#E8E8E8" stroke="#2D2D2D" stroke-width="3"/>
+          <ellipse cx="50" cy="22" rx="25" ry="8" fill="#8B7355" stroke="#2D2D2D" stroke-width="3"/>
+          <ellipse cx="50" cy="18" rx="18" ry="12" fill="#8B7355" stroke="#2D2D2D" stroke-width="3"/>
+          <circle cx="42" cy="38" r="5" fill="#2D2D2D"/>
+          <circle cx="58" cy="38" r="5" fill="#2D2D2D"/>
+          <circle cx="44" cy="36" r="2" fill="white"/>
+          <circle cx="60" cy="36" r="2" fill="white"/>
+          <path d="M 42 52 Q 50 48 58 52" stroke="#2D2D2D" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <circle cx="75" cy="75" r="12" fill="#FFE4B5" stroke="#2D2D2D" stroke-width="2"/>
+          <path d="M 75 65 L 77 75 L 75 85 L 73 75 Z" fill="#FF6B35"/>
+          <circle cx="75" cy="75" r="3" fill="#2D2D2D"/>
+        </svg>`
+      };
+      return svgMap[character.id] || `<div style="font-size: 80px; display: flex; align-items: center; justify-content: center; height: 100%;">${character.emoji}</div>`;
+    }
+
+    // 显示结果
+    function showResult() {
+      const scores = calculateScores();
+      const character = matchCharacter(scores.averageScore);
+
+      // 隐藏测验页面，显示结果页面
+      document.getElementById('quiz-page').classList.add('hidden');
+      document.getElementById('result-page').classList.remove('hidden');
+
+      // 填充角色信息
+      document.getElementById('character-avatar').innerHTML = generateCharacterAvatar(character);
+      document.getElementById('character-name').textContent = character.name;
+      document.getElementById('character-type').textContent = character.personality;
+      document.getElementById('character-desc').textContent = character.description;
+      document.getElementById('character-advice').textContent = character.advice;
+
+      // 填充分数
+      document.getElementById('total-score').textContent = scores.averageScore.toFixed(2);
+
+      // 填充因子得分
+      const factorsList = document.getElementById('factors-list');
+      factorsList.innerHTML = '';
+      factors.forEach(factor => {
+        const factorScore = scores.factorScores[factor.id];
+        const percentage = (factorScore.average / 5) * 100;
+        const colorClass = getScoreColorClass(factorScore.average);
+        
+        const factorItem = document.createElement('div');
+        factorItem.className = 'factor-item';
+        factorItem.innerHTML = `
+          <div class="factor-header">
+            <span class="factor-name">${factorScore.name}</span>
+            <span class="factor-score">${factorScore.average.toFixed(2)}</span>
+          </div>
+          <div class="factor-bar">
+            <div class="factor-fill ${colorClass}" style="width: ${percentage}%;"></div>
+          </div>
+          <p class="factor-advice">${getFactorAdvice(factorScore.average)}</p>
+        `;
+        factorsList.appendChild(factorItem);
+      });
+    }
+
+    // 重新测试
+    function restartQuiz() {
+      document.getElementById('result-page').classList.add('hidden');
+      document.getElementById('welcome-page').classList.remove('hidden');
+      currentQuestionIndex = 0;
+      answers = {};
+    }
+
+    // 分享结果
+    function shareResult() {
+      const scores = calculateScores();
+      const character = matchCharacter(scores.averageScore);
+      const text = `我在心理测评中获得了「${character.name}」角色！快来测测你是什么角色~`;
+      
+      if (navigator.share) {
+        navigator.share({
+          title: 'SCL-90 心理测评结果',
+          text: text,
+          url: window.location.href
+        }).catch(() => {});
+      } else {
+        navigator.clipboard.writeText(text + ' ' + window.location.href).then(() => {
+          alert('链接已复制到剪贴板！');
+        });
+      }
+    }
+
+    // =============== 音乐播放控制 ===============
+    
+    const bgm = document.getElementById('bgm');
+    const musicToggle = document.getElementById('music-toggle');
+    let isPlaying = false;
+
+    // 切换音乐播放状态
+    function toggleMusic() {
+      if (isPlaying) {
+        pauseMusic();
+      } else {
+        playMusic();
+      }
+    }
+
+    // 播放音乐
+    function playMusic() {
+      bgm.play().then(() => {
+        isPlaying = true;
+        musicToggle.classList.add('playing');
+      }).catch((error) => {
+        console.log('音频播放失败，可能需要用户交互或音频文件不存在：', error);
+        alert('请确保音频文件已放置在正确的路径：./audio/bgm.mp3');
+      });
+    }
+
+    // 暂停音乐
+    function pauseMusic() {
+      bgm.pause();
+      isPlaying = false;
+      musicToggle.classList.remove('playing');
+    }
+
+    // 设置音量（可选）
+    function setVolume(volume) {
+      bgm.volume = Math.max(0, Math.min(1, volume));
+    }
+
+    // 默认音量设置为 50%
+    bgm.volume = 0.5;
+
+    // =============== 呼吸感背景控制 ===============
+    
+    const breathingBg = document.getElementById('breathing-bg');
+    const totalStages = 5;
+
+    // 根据答题进度更新背景颜色
+    function updateBreathingBackground() {
+      const answeredCount = Object.keys(answers).length;
+      const progress = answeredCount / questions.length;
+      
+      // 计算当前应该处于哪个阶段 (0-4)
+      const stage = Math.min(Math.floor(progress * totalStages), totalStages - 1);
+      
+      // 移除所有阶段类，添加当前阶段类
+      for (let i = 0; i < totalStages; i++) {
+        breathingBg.classList.remove(`stage-${i}`);
+      }
+      breathingBg.classList.add(`stage-${stage}`);
+    }
+
+    // 在选择答案时调用背景更新
+    const originalSelectAnswer = selectAnswer;
+    selectAnswer = function(value) {
+      originalSelectAnswer(value);
+      updateBreathingBackground();
+    };
+  </script>
+</body>
+</html>
